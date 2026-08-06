@@ -45,7 +45,6 @@ export const contactService = {
       .catch((err) => logger.error("Failed to create admin notification for contact inquiry:", err));
 
     // Fire-and-forget emails with isolated logging for debugging
-    logger.info("Sending Client Email...");
     sendEmail({
       to: payload.email,
       subject: "We've received your message – Pronix Digital",
@@ -54,18 +53,15 @@ export const contactService = {
         serviceInterest: payload.serviceInterest,
         budgetRange: payload.budgetRange,
       }),
-    })
-      .then(() => logger.info(`Client Email Sent successfully to ${payload.email}`))
-      .catch((err) => logger.error(`Client Email Failed to send to ${payload.email}: ${err.message}`));
+      type: "client",
+    }).catch((err) => logger.error(`Client email workflow failed: ${err.message}`));
 
-    logger.info("Sending Admin Email...");
     sendEmail({
       to: env.ADMIN_NOTIFY_EMAILS,
       subject: `New Contact Inquiry from ${payload.name}`,
       html: contactNotificationTemplate(contact.toObject()),
-    })
-      .then(() => logger.info(`Admin Email Sent successfully to ${env.ADMIN_NOTIFY_EMAILS}`))
-      .catch((err) => logger.error(`Admin Email Failed to send to ${env.ADMIN_NOTIFY_EMAILS}: ${err.message}`));
+      type: "admin",
+    }).catch((err) => logger.error(`Admin email workflow failed: ${err.message}`));
 
     return publicContactDto(contact.toObject());
   },

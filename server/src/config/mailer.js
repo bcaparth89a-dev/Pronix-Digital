@@ -2,58 +2,53 @@ import nodemailer from "nodemailer";
 import { env } from "./env.js";
 import { logger } from "../utils/logger.js";
 
+logger.info("Creating SMTP transporter...");
+
+// Print configurations for verification (without leaking password characters)
+logger.info(`EMAIL_USER loaded: ${env.EMAIL_USER ? env.EMAIL_USER : "Not Configured"}`);
+logger.info(`EMAIL_PASS loaded: ${env.EMAIL_PASS ? `[Configured (Length: ${env.EMAIL_PASS.length} characters)]` : "Not Configured"}`);
+logger.info(`EMAIL_SERVICE loaded: ${env.EMAIL_SERVICE ? env.EMAIL_SERVICE : "Not Configured"}`);
+logger.info(`MAIL_FROM loaded: ${env.MAIL_FROM ? env.MAIL_FROM : "Not Configured"}`);
+
+const isGmail = env.EMAIL_SERVICE === "gmail" || (env.EMAIL_USER && env.EMAIL_USER.endsWith("@gmail.com"));
+
+const transportConfig = {
+  host: isGmail ? "smtp.gmail.com" : (env.SMTP_HOST || "smtp.gmail.com"),
+  port: isGmail ? 587 : (Number(env.SMTP_PORT) || 587),
+  secure: isGmail ? false : (env.SMTP_SECURE === "true"),
+  auth: {
+    user: env.EMAIL_USER,
+    pass: env.EMAIL_PASS,
+  },
+  // Force IPv4 resolution to prevent connect ENETUNREACH on Render's network
+  family: 4,
+  // Timeouts to prevent hanging sockets
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 15000,
+};
+
+logger.info("SMTP configuration loaded.");
+
 let transport = null;
 
 if (env.EMAIL_USER && env.EMAIL_PASS) {
-  const isGmail = env.EMAIL_SERVICE === "gmail" || env.EMAIL_USER.endsWith("@gmail.com");
-
-  const transportConfig = {
-    auth: {
-      user: env.EMAIL_USER,
-      pass: env.EMAIL_PASS,
-    },
-    // Force IPv4 DNS resolution to prevent ENETUNREACH on Render's network
-    family: 4,
-    // Connect timeout in ms
-    connectionTimeout: 10000,
-    // Greeting timeout in ms
-    greetingTimeout: 10000,
-  };
-
-  if (isGmail) {
-    // Explicit configuration for Gmail SMTP (avoiding "service: 'gmail'")
-    transportConfig.host = "smtp.gmail.com";
-    transportConfig.port = 587;
-    transportConfig.secure = false;
-    transportConfig.requireTLS = true;
-  } else {
-    // Standard custom SMTP configurations
-    transportConfig.host = env.SMTP_HOST || "smtp.gmail.com";
-    transportConfig.port = Number(env.SMTP_PORT) || 587;
-    transportConfig.secure = env.SMTP_SECURE === "true";
-  }
-
   transport = nodemailer.createTransport(transportConfig);
-
-  logger.info(`SMTP Mailer initialized using host ${transportConfig.host}:${transportConfig.port}`);
+  logger.info("Verifying SMTP connection...");
   
   transport.verify((error) => {
     if (error) {
-      if (error.code === "ENETUNREACH") {
-        logger.error("SMTP Connection Failed: Network unreachable (IPv6 connection issue). Set family: 4 or migrate to HTTP API (Resend).");
-      } else if (error.code === "ETIMEDOUT") {
-        logger.error("SMTP Connection Failed: Connection timeout. Check firewall outbound rules or port blocking.");
-      } else if (error.code === "EAUTH") {
-        logger.error("SMTP Authentication Failed: Invalid App Password or credentials.");
+      if (error.code === "EAUTH") {
+        logger.error("SMTP authentication failed.");
       } else {
-        logger.error(`SMTP Connection Failed: ${error.message}`);
+        logger.error(`SMTP connection failed. Error: ${error.message}`);
       }
     } else {
-      logger.info("SMTP Authentication Successful. SMTP Server is Ready.");
+      logger.info("SMTP verified successfully.");
     }
   });
 } else {
-  logger.info("SMTP Mailer credentials not provided. Mailer is inactive.");
+  logger.warn("SMTP connection failed. Reason: Credentials not provided.");
 }
 
 export const mailer = transport;

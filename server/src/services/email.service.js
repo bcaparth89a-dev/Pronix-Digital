@@ -1,78 +1,64 @@
 import { env } from "../config/env.js";
 import { mailer } from "../config/mailer.js";
 import { logger } from "../utils/logger.js";
-import axios from "axios";
 
-// Helper function to retry an async task with exponential backoff
-async function retry(fn, retries = 3, delay = 1000) {
-  try {
-    return await fn();
-  } catch (err) {
-    if (retries <= 0) throw err;
-    logger.warn(`Email send failed. Retrying in ${delay}ms... (Remaining retries: ${retries})`);
-    await new Promise((resolve) => setTimeout(resolve, delay));
-    return retry(fn, retries - 1, delay * 2);
+// Helper function to send email with up to 3 retries (exponential backoff)
+async function sendWithRetry(mailOptions) {
+  const maxRetries = 3;
+  let attempt = 0;
+  let delay = 1000;
+
+  while (attempt <= maxRetries) {
+    try {
+      const info = await mailer.sendMail(mailOptions);
+      if (attempt > 0) {
+        logger.info("Email finally sent.");
+      }
+      return info;
+    } catch (err) {
+      attempt++;
+      if (attempt > maxRetries) {
+        logger.error("Email permanently failed.");
+        throw err;
+      }
+      logger.warn("Retrying email...");
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      delay *= 2;
+    }
   }
 }
 
-export async function sendEmail({ to, subject, html, text }) {
-  return retry(async () => {
-    // 1. Resend API Flow (Recommended for Production)
-    if (env.RESEND_API_KEY) {
-      logger.info(`Sending email via Resend API to ${to}...`);
-      try {
-        const response = await axios.post(
-          "https://api.resend.com/emails",
-          {
-            from: env.MAIL_FROM || "onboarding@resend.dev",
-            to,
-            subject,
-            html,
-            text,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${env.RESEND_API_KEY}`,
-              "Content-Type": "application/json",
-            },
-            timeout: 10000, // 10-second timeout
-          }
-        );
-        logger.info(`Email Sent successfully via Resend to ${to}. ID: ${response.data.id}`);
-        return response.data;
-      } catch (err) {
-        const errorMsg = err.response?.data?.message || err.message;
-        logger.error(`Resend API Failed to send email to ${to}: ${errorMsg}`);
-        throw new Error(`Resend delivery failed: ${errorMsg}`);
-      }
-    }
+export async function sendEmail({ to, subject, html, text, type }) {
+  if (type === "client") {
+    logger.info("Sending confirmation email...");
+  } else if (type === "admin") {
+    logger.info("Sending admin email...");
+  } else {
+    logger.info(`Sending email to ${to}...`);
+  }
 
-    // 2. SMTP Transporter Flow (Fallback)
-    if (!mailer) {
-      logger.error("Mailer is not initialized. SMTP credentials are missing.");
-      throw new Error("Email service is not configured.");
-    }
+  if (!mailer) {
+    logger.error("SMTP connection failed. Transporter is not initialized.");
+    throw new Error("SMTP connection failed.");
+  }
 
-    logger.info(`Sending email via SMTP to ${to}...`);
-    try {
-      const info = await mailer.sendMail({
-        from: env.MAIL_FROM,
-        to,
-        subject,
-        html,
-        text,
-      });
-      logger.info(`Email Sent successfully via SMTP to ${to}. MessageId: ${info.messageId}`);
-      return info;
-    } catch (err) {
-      if (err.code === "EAUTH") {
-        logger.error(`SMTP Authentication Failed during send to ${to}: Invalid App Password`);
-      } else if (err.code === "ETIMEDOUT") {
-        logger.error(`SMTP Timeout during send to ${to}. Possible firewall issue or network block.`);
-      } else {
-        logger.error(`SMTP Failed to send email to ${to}: ${err.message}`);
-      }
-      throw err;
-    }
-  });
+  const mailOptions = {
+    from: env.MAIL_FROM || env.EMAIL_USER,
+    to,
+    subject,
+    html,
+    text,
+  };
+
+  const info = await sendWithRetry(mailOptions);
+  
+  if (type === "client") {
+    logger.info("Confirmation email sent successfully.");
+  } else if (type === "admin") {
+    logger.info("Admin email sent successfully.");
+  } else {
+    logger.info(`Email sent successfully to ${to}.`);
+  }
+  
+  return info;
 }
