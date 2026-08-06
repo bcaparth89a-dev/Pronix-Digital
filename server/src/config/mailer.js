@@ -7,7 +7,7 @@ logger.info("Creating SMTP transporter...");
 
 // Print configurations for verification (without leaking password characters)
 logger.info(`EMAIL_USER loaded: ${env.EMAIL_USER ? env.EMAIL_USER : "Not Configured"}`);
-logger.info(`EMAIL_PASS loaded: ${env.EMAIL_PASS ? `[Configured (Length: ${env.EMAIL_PASS.length} characters)]` : "Not Configured"}`);
+logger.info(`EMAIL_PASS loaded: ${env.EMAIL_PASS ? "Configured" : "Not Configured"}`);
 logger.info(`EMAIL_SERVICE loaded: ${env.EMAIL_SERVICE ? env.EMAIL_SERVICE : "Not Configured"}`);
 logger.info(`MAIL_FROM loaded: ${env.MAIL_FROM ? env.MAIL_FROM : "Not Configured"}`);
 
@@ -54,8 +54,6 @@ const transportConfig = {
     user: env.EMAIL_USER,
     pass: env.EMAIL_PASS,
   },
-  // Force IPv4 resolution to prevent connect ENETUNREACH on Render's network
-  family: 4,
   // Timeouts to prevent hanging sockets
   connectionTimeout: 10000,
   greetingTimeout: 10000,
