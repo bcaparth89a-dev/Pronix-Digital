@@ -46,6 +46,18 @@ dns.lookup(smtpHost, (err, address, family) => {
   }
 });
 
+// Custom DNS lookup function to force IPv4 only
+const customLookup = (hostname, options, callback) => {
+  let lookupOptions = options;
+  let cb = callback;
+  if (typeof options === "function") {
+    cb = options;
+    lookupOptions = {};
+  }
+  const mergedOptions = { ...lookupOptions, family: 4 };
+  return dns.lookup(hostname, mergedOptions, cb);
+};
+
 const transportConfig = {
   host: smtpHost,
   port: smtpPort,
@@ -54,6 +66,8 @@ const transportConfig = {
     user: env.EMAIL_USER,
     pass: env.EMAIL_PASS,
   },
+  // Custom lookup forcing IPv4
+  lookup: customLookup,
   // Timeouts to prevent hanging sockets
   connectionTimeout: 10000,
   greetingTimeout: 10000,
@@ -68,7 +82,7 @@ logger.info("[Diagnostics] Transporter Configuration Loaded:");
 logger.info(`  - Host: ${transportConfig.host}`);
 logger.info(`  - Port: ${transportConfig.port}`);
 logger.info(`  - Secure (implicit SSL/TLS): ${transportConfig.secure}`);
-logger.info(`  - Force IPv4 (family): ${transportConfig.family}`);
+logger.info(`  - Custom IPv4 Lookup: Configured`);
 logger.info(`  - Connection Timeout: ${transportConfig.connectionTimeout}ms`);
 logger.info(`  - Greeting Timeout: ${transportConfig.greetingTimeout}ms`);
 logger.info(`  - Socket Timeout: ${transportConfig.socketTimeout}ms`);
