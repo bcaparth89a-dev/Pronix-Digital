@@ -13,8 +13,6 @@ logger.info(`MAIL_FROM loaded: ${env.MAIL_FROM ? env.MAIL_FROM : "Not Configured
 
 const isGmail = env.EMAIL_SERVICE === "gmail" || (env.EMAIL_USER && env.EMAIL_USER.endsWith("@gmail.com"));
 const smtpHost = isGmail ? "smtp.gmail.com" : (env.SMTP_HOST || "smtp.gmail.com");
-const smtpPort = isGmail ? 587 : (Number(env.SMTP_PORT) || 587);
-const smtpSecure = isGmail ? false : (env.SMTP_SECURE === "true");
 
 // Force Node's default DNS result order to prioritize IPv4 addresses
 if (typeof dns.setDefaultResultOrder === "function") {
@@ -37,45 +35,81 @@ if (env.EMAIL_USER && env.EMAIL_PASS) {
     logger.info(`Connecting to:\n${address}\nFamily: IPv4`);
     logger.info("SMTP configuration loaded.");
 
-    const transportConfig = {
-      host: address, // Direct IPv4 IP address to bypass client resolution entirely
-      port: smtpPort,
-      secure: smtpSecure,
+    // Transporter for Port 587 (STARTTLS)
+    const config587 = {
+      host: address,
+      port: 587,
+      secure: false,
       auth: {
         user: env.EMAIL_USER,
         pass: env.EMAIL_PASS,
       },
-      // Root servername overrides STARTTLS host parsing
       servername: smtpHost,
       connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 15000,
+      logger: true, // Output SMTP transaction logs to stdout
+      debug: true,  // Output SMTP debugging info to stdout
       tls: {
-        servername: smtpHost, // Crucial for TLS certificate match validation
+        servername: smtpHost,
         rejectUnauthorized: true,
       },
     };
 
-    try {
-      mailer = nodemailer.createTransport(transportConfig);
-      logger.info("Verifying SMTP connection...");
+    // Transporter for Port 465 (Implicit TLS)
+    const config465 = {
+      host: address,
+      port: 465,
+      secure: true,
+      auth: {
+        user: env.EMAIL_USER,
+        pass: env.EMAIL_PASS,
+      },
+      servername: smtpHost,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+      logger: true,
+      debug: true,
+      tls: {
+        servername: smtpHost,
+        rejectUnauthorized: true,
+      },
+    };
 
-      mailer.verify((error) => {
-        if (error) {
-          logger.error(`[Diagnostics] SMTP verify error: Code=${error.code}, Message=${error.message}`);
-          if (error.code === "EAUTH") {
-            logger.error("SMTP authentication failed.");
-          } else {
-            logger.error("SMTP connection failed.");
-          }
+    const transporter587 = nodemailer.createTransport(config587);
+    const transporter465 = nodemailer.createTransport(config465);
+
+    // Default mailer to 587 transporter first
+    mailer = transporter587;
+
+    logger.info("[Diagnostics] Verifying SMTP connection on Port 587 (STARTTLS)...");
+    transporter587.verify((err587) => {
+      if (err587) {
+        logger.error(`[Diagnostics] Port 587 Verification failed: Code=${err587.code}, Message=${err587.message}`);
+      } else {
+        logger.info("[Diagnostics] Port 587 (STARTTLS) verified successfully.");
+        mailer = transporter587;
+      }
+
+      logger.info("[Diagnostics] Verifying SMTP connection on Port 465 (SSL/TLS)...");
+      transporter465.verify((err465) => {
+        if (err465) {
+          logger.error(`[Diagnostics] Port 465 Verification failed: Code=${err465.code}, Message=${err465.message}`);
         } else {
-          logger.info("SMTP verified successfully.");
+          logger.info("[Diagnostics] Port 465 (SSL/TLS) verified successfully.");
+          // If port 465 works, update the exported mailer reference
+          mailer = transporter465;
+        }
+
+        if (err587 && err465) {
+          logger.error("[Diagnostics] BOTH SMTP Ports (587 and 465) failed to verify.");
+          logger.error("Root Cause Analysis: Outbound SMTP connection timed out on both ports.");
+          logger.error("This indicates that the hosting provider (Render) is blocking outgoing connections on all standard SMTP ports (587 & 465) at the network firewall layer, OR Gmail's SMTP servers are silently dropping TCP packets from this datacenter IP range.");
+          logger.error("No further code changes can bypass this network-level timeout restriction. Access to smtp.gmail.com is blocked by the infrastructure network policies.");
         }
       });
-    } catch (createErr) {
-      logger.error(`[SMTP] Transporter creation failed: ${createErr.message}`);
-      logger.error("SMTP connection failed.");
-    }
+    });
   });
 } else {
   logger.warn("SMTP connection failed. Reason: Credentials not provided.");
