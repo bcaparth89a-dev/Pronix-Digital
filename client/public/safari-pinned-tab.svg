@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <filter id="mono">
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0 1" />
+        <feFuncG type="table" tableValues="0 1" />
+        <feFuncB type="table" tableValues="0 1" />
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <image href="/branding/logo-mark.svg" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet" filter="url(#mono)" />
+</svg>

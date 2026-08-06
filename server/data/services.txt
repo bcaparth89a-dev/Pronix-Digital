@@ -1,0 +1,8 @@
+Pronix Digital offers a focused team for the full product lifecycle, spanning Strategy, Design Systems, Full-stack Engineering, and Growth Ops.
+Our core services include:
+1. Web Platforms: High-conversion websites, SaaS frontends, custom portals, and fast React experiences.
+2. Mobile Products: Cross-platform iOS and Android apps with polished UX and reliable delivery. We build apps that feel native and perform excellently.
+3. Custom Software: Internal tools, CRMs, automation pipelines, API ecosystems, and workflow modernization. We transform legacy setups into modern codebases.
+4. Growth Systems: SEO, analytics integration, landing funnels, and campaign infrastructure built for revenue and tracking.
+We bring strategy, interface design, engineering, and launch execution into a single, cohesive delivery system.
+Our development stack relies on modern web standards: React, Express, MongoDB, Tailwind CSS, Node.js, and next-generation tools.

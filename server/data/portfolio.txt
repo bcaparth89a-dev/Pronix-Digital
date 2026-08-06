@@ -1,0 +1,6 @@
+Pronix Digital has a diverse portfolio of successful software products. Selected projects include:
+- Apex CRM: A custom customer relationship management system built for a leading logistics company. It reduced workflow delays by 40% and automated multi-channel client communications.
+- Nova SaaS Frontend: A high-speed, interactive user interface built with React and Tailwind CSS for a fintech platform. It supports complex real-time charts, fast search, and sub-second page transition.
+- FitFlow Mobile App: A cross-platform React Native mobile application for iOS and Android that handles workout tracking, video streaming, and community engagement. It has over 10,000 active users.
+- Stellar Web Platform: An enterprise-grade portal for managing supply chain logistics, incorporating a responsive admin dashboard, role-based access control, and PDF reports.
+Every build in our portfolio is shaped around concrete business outcomes, not just screens.

@@ -1,0 +1,19 @@
+Frequently Asked Questions (FAQs) for Pronix Digital:
+
+Q: What services do you offer?
+A: Pronix Digital offers full-lifecycle software services including Web Platforms, Mobile Products, Custom Software (CRMs, internal tools), and Growth Systems (SEO, landing funnels, and analytics).
+
+Q: Show me recent projects.
+A: Some of our recent projects include Apex CRM (custom logistics tool), Nova SaaS Frontend (fintech dashboard), FitFlow Mobile App (fitness tracking), and Stellar Web Platform (supply chain portal).
+
+Q: What technologies do you use?
+A: We build our applications using modern JavaScript/MERN stack including React, Node.js, Express, and MongoDB. We style our frontends using Tailwind CSS and Vanilla CSS, and use motion libraries like Framer Motion for high-fidelity animations.
+
+Q: How can Pronix Digital help my business?
+A: Pronix Digital helps you turn messy ideas into buildable, highly performant software products. We provide senior engineering from day one, maintain transparent communication, and ship clean code weekly to ensure your product scales and drives revenue.
+
+Q: What is your development process?
+A: Our process is built on clarity and speed: we create fast prototypes, iterate with you in weekly cycles, maintain a design system, and implement robust security and performance standards right from the start.
+
+Q: How do I start a project?
+A: You can contact our team through the website's contact form to book a consultation or request a custom quote.

@@ -1,0 +1,699 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font fallback override descriptors for Inter to match Arial metrics */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  ascent-override: 96%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+  size-adjust: 107%;
+}
+
+/* Font fallback override descriptors for Space Grotesk to match Arial metrics */
+@font-face {
+  font-family: "Space Grotesk Fallback";
+  src: local("Arial");
+  ascent-override: 100%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  size-adjust: 102%;
+}
+
+@layer base {
+  :root {
+    /* Core palette - Light (Paper / Walnut Theme) in HSL format */
+    --background: 36 22% 94%;
+    --foreground: 30 13% 11%;
+    --card: 38 29% 97%;
+    --card-foreground: 30 13% 11%;
+    --popover: 38 29% 97%;
+    --popover-foreground: 30 13% 11%;
+    --primary: 19 36% 35%;
+    --primary-foreground: 36 22% 94%;
+    --secondary: 35 37% 62%;
+    --secondary-foreground: 30 13% 11%;
+    --muted: 36 22% 90%;
+    --muted-foreground: 30 10% 40%;
+    --accent: 35 37% 62%;
+    --accent-foreground: 30 13% 11%;
+    --destructive: 8 60% 40%;
+    --destructive-foreground: 36 22% 94%;
+    --border: 35 18% 81%;
+    --input: 35 18% 81%;
+    --ring: 19 36% 35%;
+    --radius: 20px;
+
+    /* Surface tokens */
+    --surface-1: 36 22% 90%;
+    --surface-2: 36 22% 90%;
+    --hero-bg: 22 15% 20%;
+
+    /* ============================================================
+       FLUID DESIGN TOKEN SYSTEM
+       All values use clamp(min, preferred-fluid, max)
+       ============================================================ */
+
+    /* Fluid section vertical spacing */
+    --space-section:    clamp(4rem, 8vw, 10rem);
+    --space-section-sm: clamp(2rem, 4vw, 4rem);
+
+    /* Fluid container inline padding */
+    --container-pad: clamp(1rem, 4vw, 2.5rem);
+
+    /* Fluid typography scale */
+    --text-hero: clamp(2.5rem, 6vw, 5rem);
+    --text-h2:   clamp(2rem,  4vw, 3.5rem);
+    --text-h3:   clamp(1.25rem, 2vw,  1.75rem);
+    --text-body: clamp(0.95rem, 1vw,  1.1rem);
+    --text-sm:   clamp(0.8rem,  0.9vw, 0.95rem);
+
+    /* Fluid gap tokens */
+    --gap-sm: clamp(0.75rem, 1.5vw, 1.25rem);
+    --gap-md: clamp(1rem,    2vw,   2rem);
+    --gap-lg: clamp(1.5rem,  3vw,   3rem);
+  }
+
+  .dark {
+    /* Core palette - Dark (Walnut Theme fallback) in HSL format */
+    --background: 22 15% 20%;
+    --foreground: 36 22% 94%;
+    --card: 27 14% 25%;
+    --card-foreground: 36 22% 94%;
+    --popover: 27 14% 25%;
+    --popover-foreground: 36 22% 94%;
+    --primary: 35 37% 62%;
+    --primary-foreground: 30 13% 11%;
+    --secondary: 19 36% 35%;
+    --secondary-foreground: 36 22% 94%;
+    --muted: 27 14% 25%;
+    --muted-foreground: 35 37% 62%;
+    --accent: 35 37% 62%;
+    --accent-foreground: 30 13% 11%;
+    --destructive: 8 60% 40%;
+    --destructive-foreground: 36 22% 94%;
+    --border: 27 14% 25%;
+    --input: 27 14% 25%;
+    --ring: 35 37% 62%;
+
+    /* Surface tokens - Dark */
+    --surface-1: 27 14% 25%;
+    --surface-2: 27 14% 25%;
+    --hero-bg: 22 15% 20%;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      "Inter",
+      "Inter Fallback",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1,
+      "ss01" 1;
+    font-optical-sizing: auto;
+    line-height: 1.6;
+  }
+
+  /* Apply Space Grotesk to headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family:
+      "Space Grotesk",
+      "Space Grotesk Fallback",
+      "Inter",
+      -apple-system,
+      sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* Improve focus ring */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+
+  /* Text selection */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}
+
+@layer components {
+  /* Gradient text utility */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  }
+
+  .text-gradient-blue-cyan {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    background: linear-gradient(
+      105deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted)) 40%,
+      hsl(var(--muted-foreground) / 0.15) 50%,
+      hsl(var(--muted)) 60%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+
+  /* Glass card */
+  .glass {
+    background: hsl(var(--card) / 0.8);
+    @apply backdrop-blur-md border border-border/50;
+  }
+
+  /* Premium Glass card */
+  .glass-premium {
+    background: linear-gradient(135deg, hsl(var(--card) / 0.8), hsl(var(--card) / 0.5));
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.35);
+    box-shadow: 
+      0 10px 40px -10px rgba(0, 0, 0, 0.04), 
+      inset 0 1px 1px hsl(var(--card) / 0.8),
+      inset 0 -1px 1px hsl(var(--foreground) / 0.02);
+  }
+
+  /* Noise Overlay */
+  .noise-overlay {
+    position: relative;
+  }
+  
+  .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Mesh gradient backgrounds */
+  .bg-mesh {
+    background-image: 
+      radial-gradient(at 10% 20%, hsl(var(--secondary) / 0.08) 0px, transparent 50%),
+      radial-gradient(at 90% 10%, hsl(var(--primary) / 0.06) 0px, transparent 50%),
+      radial-gradient(at 50% 80%, hsl(var(--secondary) / 0.05) 0px, transparent 50%);
+  }
+
+  /* Architectural thin line divider card */
+  .card-architectural {
+    @apply border border-border/60 bg-card/65 transition-all duration-500 hover:border-primary/20 hover:shadow-xl-soft;
+    position: relative;
+  }
+
+  .card-architectural::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid hsl(var(--border) / 0.6);
+    border-right: 1px solid hsl(var(--border) / 0.6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card-architectural:hover::after {
+    opacity: 1;
+  }
+
+  /* Hero dot grid background */
+  .hero-grid {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Section headings */
+  .section-tag {
+    @apply inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1 text-xs font-semibold tracking-wide text-primary uppercase;
+  }
+
+  /* Premium card */
+  .card-premium {
+    @apply relative rounded-lg border bg-card p-6 transition-all duration-300;
+    @apply hover:border-primary/30 hover:shadow-card-hover;
+  }
+  .card-premium::before {
+    content: "";
+    @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.04), transparent);
+  }
+  .card-premium:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Animated gradient border */
+  .border-gradient {
+    position: relative;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    margin: -1px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.5), hsl(var(--primary) / 0.1));
+  }
+
+  /* ============================================================
+     FLUID SECTION & CONTAINER UTILITIES
+     ============================================================ */
+
+  /* Fluid section vertical padding — replaces py-20 md:py-28 everywhere */
+  .section-fluid {
+    padding-block: var(--space-section);
+  }
+
+  /* Fluid smaller section padding */
+  .section-fluid-sm {
+    padding-block: var(--space-section-sm);
+  }
+
+  /* Fluid horizontal padding for containers */
+  .px-fluid {
+    padding-inline: var(--container-pad);
+  }
+}
+
+@layer utilities {
+  /* Font display */
+  .font-display {
+    font-family:
+      "Space Grotesk",
+      "Space Grotesk Fallback",
+      "Inter",
+      -apple-system,
+      sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Gradient backgrounds */
+  .bg-hero-dark {
+    background: linear-gradient(135deg, #0a0e1a 0%, #0d1730 50%, #0a0e1a 100%);
+  }
+
+  .bg-grid-overlay {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Text balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Prose for markdown content */
+  .prose-content h1 {
+    @apply text-2xl font-display font-bold mt-8 mb-4;
+  }
+  .prose-content h2 {
+    @apply text-xl font-display font-semibold mt-6 mb-3;
+  }
+  .prose-content h3 {
+    @apply text-lg font-display font-semibold mt-5 mb-2;
+  }
+  .prose-content p {
+    @apply mb-4 leading-7 text-muted-foreground;
+  }
+  .prose-content ul {
+    @apply mb-4 space-y-1.5 list-disc list-inside;
+  }
+  .prose-content li {
+    @apply text-muted-foreground;
+  }
+  .prose-content pre {
+    @apply rounded-xl bg-muted p-4 overflow-x-auto text-sm font-mono my-4;
+  }
+  .prose-content code {
+    @apply rounded bg-muted px-1.5 py-0.5 text-xs font-mono;
+  }
+  .prose-content strong {
+    @apply font-semibold text-foreground;
+  }
+  .prose-content em {
+    @apply italic;
+  }
+  .prose-content a {
+    @apply text-primary underline underline-offset-2 hover:opacity-80;
+  }
+  .prose-content blockquote {
+    @apply border-l-4 border-primary/30 pl-4 italic text-muted-foreground;
+  }
+
+  /* Centered, responsive layout container with premium spacing */
+  .container {
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin-inline: auto !important;
+    padding-inline: 16px !important; /* Small mobile */
+  }
+  @media (min-width: 360px) {
+    .container {
+      padding-inline: 20px !important; /* Mobile */
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      padding-inline: 32px !important; /* Tablet */
+    }
+  }
+  @media (min-width: 1024px) {
+    .container {
+      padding-inline: 40px !important; /* Large tablet */
+    }
+  }
+  @media (min-width: 1280px) {
+    .container {
+      padding-inline: 64px !important; /* Desktop */
+    }
+  }
+
+  /* Architectural Grid Patterns */
+  .bg-grid-architectural {
+    background-image: radial-gradient(circle, hsl(var(--foreground)/0.03) 1px, transparent 1px),
+                      linear-gradient(hsl(var(--foreground)/0.015) 1px, transparent 1px),
+                      linear-gradient(to right, hsl(var(--foreground)/0.015) 1px, transparent 1px);
+    background-size: 20px 20px, 40px 40px, 40px 40px;
+  }
+
+  /* ============================================================
+     CONTENT PRIORITY SYSTEM
+     Progressive disclosure: hide in order as space decreases.
+     1. Decorative SVG patterns (.fluid-hide-decorative)
+     2. Technology chips     (.fluid-hide-chips)
+     3. Secondary labels     (.fluid-hide-secondary)
+     Headlines, CTAs, nav, and contact info are NEVER hidden.
+     ============================================================ */
+
+  /* Hide decorative SVGs below 480px */
+  @media (max-width: 479px) {
+    .fluid-hide-decorative {
+      display: none !important;
+    }
+  }
+
+  /* Hide tech chips below 400px */
+  @media (max-width: 399px) {
+    .fluid-hide-chips {
+      display: none !important;
+    }
+  }
+
+  /* Hide secondary metadata labels below 360px */
+  @media (max-width: 359px) {
+    .fluid-hide-secondary {
+      display: none !important;
+    }
+  }
+
+  /* Landscape phone: compact nav items & hide non-critical blocks */
+  @media (orientation: landscape) and (max-height: 480px) {
+    .landscape-compact {
+      padding-block: 0.5rem !important;
+    }
+    .landscape-hide {
+      display: none !important;
+    }
+  }
+
+  /* Ultrawide centering guard — never stretch past 1800px */
+  .ultrawide-guard {
+    max-width: min(92vw, 1800px);
+    margin-inline: auto;
+  }
+
+  /* ============================================================
+     CONTAINER QUERIES FOR ADAPTIVE COMPONENTS
+     ============================================================ */
+
+  /* Founder card container query style cleaned up */
+  .founder-card-container {
+    width: 100%;
+  }
+
+  /* Service card container query */
+  .service-card-container {
+    container-type: inline-size;
+    container-name: service;
+    width: 100%;
+  }
+
+  @container service (min-width: 640px) {
+    .service-card {
+      flex-direction: row !important;
+    }
+    .service-visual-wrapper {
+      width: 45% !important;
+      height: auto !important;
+    }
+    .service-content-wrapper {
+      width: 55% !important;
+    }
+  }
+
+  @container service (max-width: 639px) {
+    .service-card {
+      flex-direction: column !important;
+    }
+    .service-visual-wrapper {
+      width: 100% !important;
+      height: 200px !important;
+    }
+    .service-content-wrapper {
+      width: 100% !important;
+    }
+  }
+
+  /* Hero capability panel container query */
+  .capability-panel-container {
+    container-type: inline-size;
+    container-name: capability;
+    width: 100%;
+  }
+
+  @container capability (max-width: 500px) {
+    .capability-chip {
+      display: none !important;
+    }
+    .capability-chip:first-child,
+    .capability-chip:nth-child(2),
+    .capability-chip:nth-child(3) {
+      display: inline-flex !important;
+    }
+  }
+
+  @container capability (max-width: 400px) {
+    .capability-chips-wrapper {
+      display: none !important;
+    }
+  }
+
+  @container capability (max-width: 280px) {
+    .capability-marquee-row {
+      flex-direction: column !important;
+      height: auto !important;
+    }
+  }
+
+  /* ============================================================
+     PROGRESSIVE CONTENT PRIORITY SYSTEM
+     ============================================================ */
+  @media (max-width: 640px) {
+    .priority-decorative {
+      display: none !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .priority-chips {
+      display: none !important;
+    }
+  }
+  @media (max-width: 360px) {
+    .priority-secondary {
+      display: none !important;
+    }
+  }
+  @media (max-width: 320px) {
+    .priority-description {
+      display: none !important;
+    }
+  }
+}
+
+/* ============================================================
+   HERO SECTION — Layout overrides for tablet and desktop
+   (Moved from JSX inline <style> to reduce render-blocking JS)
+   ============================================================ */
+
+/* Tablet Layout (768px to 1199px) */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .hero-grid-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 2.5rem !important;
+  }
+  .hero-section .container {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  .hero-left-column {
+    flex: 1 1 0% !important;
+    max-width: calc(100% - clamp(320px, 38vw, 420px) - 2.5rem) !important;
+  }
+  .hero-right-column {
+    flex: 0 0 clamp(320px, 38vw, 420px) !important;
+    width: clamp(320px, 38vw, 420px) !important;
+    max-width: clamp(320px, 38vw, 420px) !important;
+    margin-top: 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    min-width: 320px !important;
+  }
+  .hero-right-column > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .hero-right-column .relative.w-full {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 440px !important;
+    padding: 1rem !important;
+  }
+  .hero-buttons-container {
+    flex-direction: row !important;
+  }
+  .hero-buttons-container > * {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+  }
+  .hero-stats-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Desktop Layout (>= 1200px) */
+@media (min-width: 1200px) {
+  .hero-grid-container {
+    display: grid !important;
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  }
+  .hero-left-column {
+    grid-column: span 6 / span 6 !important;
+  }
+  .hero-right-column {
+    grid-column: span 6 / span 6 !important;
+    margin-top: 0 !important;
+  }
+  .hero-stats-container {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Short viewports (Nest Hub, etc.) */
+@media (max-height: 700px) {
+  .hero-section {
+    min-height: 85vh !important;
+    padding-top: 5rem !important;
+    padding-bottom: 2rem !important;
+  }
+  .hero-left-column {
+    margin-top: 0 !important;
+  }
+  .hero-heading {
+    font-size: clamp(2rem, 4vw, 3.25rem) !important;
+  }
+  .hero-right-column .relative.w-full {
+    height: 320px !important;
+  }
+}
+
+/* ============================================================
+   CAPABILITY MARQUEE ANIMATIONS
+   (Moved from JSX inline <style> to static CSS bundle)
+   ============================================================ */
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@keyframes marquee-down {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+.animate-scroll-up {
+  animation: marquee-up 18s linear infinite;
+}
+.animate-scroll-down {
+  animation: marquee-down 18s linear infinite;
+}
+.pause-on-hover:hover .animate-scroll-up,
+.pause-on-hover:hover .animate-scroll-down {
+  animation-play-state: paused;
+}

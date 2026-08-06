@@ -1,0 +1,10 @@
+Pronix Digital regularly publishes insights on shipping premium digital products.
+Blog post titles and snippets:
+1. "Why Custom CRMs Win Over Off-the-Shelf Solutions"
+   - Building a bespoke CRM ensures the software fits your unique business processes rather than forcing your team to adapt to rigid templates. We discuss security, workflow integrations, and long-term costs.
+2. "Designing Scalable Design Systems in React"
+   - A design system is more than component styles; it is a shared language. Learn how to structure tokens, maintain consistency, and ensure animations are smooth across React applications.
+3. "The Weekly Shipping Cadence: How We Avoid Project Delays"
+   - Large software delays happen when feedback loops are too long. Shipping working code every single week maintains visible momentum and ensures alignment with business goals from start to finish.
+4. "Modern API Design with Node.js and Express"
+   - Best practices for structuring routes, applying validation schemas using Zod, handling errors, and implementing secure token-based authentication (JWT) for production MERN platforms.

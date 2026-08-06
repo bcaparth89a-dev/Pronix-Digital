@@ -1,0 +1,28 @@
+import { Router } from "express";
+import { authRouter } from "../../routes/auth.routes.js";
+import { blogRouter } from "../../routes/blog.routes.js";
+import { chatRouter } from "../../routes/chat.routes.js";
+import { contactRouter } from "../../routes/contact.routes.js";
+import { faqRouter } from "../../routes/faq.routes.js";
+import { healthRouter } from "../../routes/health.routes.js";
+import { projectRouter } from "../../routes/project.routes.js";
+import { statsRouter } from "../../routes/stats.routes.js";
+import { uploadRouter } from "../../routes/upload.routes.js";
+import { userRouter } from "../../routes/user.routes.js";
+import { metricRouter } from "../../routes/metric.routes.js";
+import { serviceRouter } from "../../routes/service.routes.js";
+
+export const apiRouter = Router();
+
+apiRouter.use("/health", healthRouter);
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/projects", projectRouter);
+apiRouter.use("/blogs", blogRouter);
+apiRouter.use("/chat", chatRouter);
+apiRouter.use("/faqs", faqRouter);
+apiRouter.use("/contacts", contactRouter);
+apiRouter.use("/users", userRouter);
+apiRouter.use("/stats", statsRouter);
+apiRouter.use("/upload", uploadRouter);
+apiRouter.use("/metrics", metricRouter);
+apiRouter.use("/services", serviceRouter);

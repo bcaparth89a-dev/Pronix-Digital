@@ -1,0 +1,27 @@
+{
+  "name": "pronix-digital",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready MERN architecture for Pronix Digital.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace client\" \"npm run dev --workspace server\"",
+    "build": "npm run build --workspace client",
+    "start": "npm run start --workspace server",
+    "db:sync-indexes": "npm run db:sync-indexes --workspace server",
+    "db:ingest": "npm run db:ingest --workspace server",
+    "lint": "npm run lint --workspace client && npm run lint --workspace server",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}
