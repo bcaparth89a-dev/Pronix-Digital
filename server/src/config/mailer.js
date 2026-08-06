@@ -16,6 +16,11 @@ const smtpHost = isGmail ? "smtp.gmail.com" : (env.SMTP_HOST || "smtp.gmail.com"
 const smtpPort = isGmail ? 587 : (Number(env.SMTP_PORT) || 587);
 const smtpSecure = isGmail ? false : (env.SMTP_SECURE === "true");
 
+// Force Node's default DNS result order to prioritize IPv4 addresses
+if (typeof dns.setDefaultResultOrder === "function") {
+  dns.setDefaultResultOrder("ipv4first");
+}
+
 // Run Diagnostic DNS lookups on Startup
 logger.info(`[Diagnostics] Performing DNS lookup for SMTP host: ${smtpHost}...`);
 
@@ -48,13 +53,13 @@ dns.lookup(smtpHost, (err, address, family) => {
 
 // Custom DNS lookup function to force IPv4 only
 const customLookup = (hostname, options, callback) => {
-  let lookupOptions = options;
   let cb = callback;
+  let lookupOptions = options;
   if (typeof options === "function") {
     cb = options;
     lookupOptions = {};
   }
-  const mergedOptions = { ...lookupOptions, family: 4 };
+  const mergedOptions = Object.assign({}, lookupOptions || {}, { family: 4 });
   return dns.lookup(hostname, mergedOptions, cb);
 };
 
