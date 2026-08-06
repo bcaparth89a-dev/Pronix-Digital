@@ -9,6 +9,7 @@ import { Metric } from "../models/Metric.model.js";
 import { FAQ } from "../models/FAQ.model.js";
 import { Contact } from "../models/Contact.model.js";
 import { KnowledgeChunk } from "../models/KnowledgeChunk.model.js";
+import { Notification } from "../models/Notification.model.js";
 
 async function main() {
   logger.info("Connecting to database to sync indexes...");
@@ -24,6 +25,7 @@ async function main() {
     FAQ,
     Contact,
     KnowledgeChunk,
+    Notification,
   ];
 
   logger.info("Starting index synchronization...");

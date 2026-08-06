@@ -1,7 +1,6 @@
 import { cloudinary } from "../config/cloudinary.js";
 import { httpStatus } from "../constants/httpStatus.js";
 import { projectService } from "../services/project.service.js";
-import { projectRepository } from "../repositories/project.repository.js";
 import { Project } from "../models/Project.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -32,7 +31,7 @@ export const createProject = asyncHandler(async (req, res) => {
       .json(new ApiResponse(httpStatus.CREATED, project, "Project created"));
   } catch (error) {
     if (req.validated?.body?.coverImage?.publicId) {
-      console.log(`[Upload] Project creation failed. Deleting orphan coverImage from Cloudinary: ${req.validated.body.coverImage.publicId}`);
+      console.info(`[Upload] Project creation failed. Deleting orphan coverImage from Cloudinary: ${req.validated.body.coverImage.publicId}`);
       try {
         await cloudinary.uploader.destroy(req.validated.body.coverImage.publicId);
       } catch (destroyError) {
@@ -47,7 +46,7 @@ export const updateProject = asyncHandler(async (req, res) => {
   let existingProject = null;
   try {
     existingProject = await projectService.getById(req.validated.params.id);
-  } catch (err) {
+  } catch {
     // Ignore error
   }
 
@@ -58,7 +57,7 @@ export const updateProject = asyncHandler(async (req, res) => {
     const newPublicId = req.validated?.body?.coverImage?.publicId;
     const oldPublicId = existingProject?.coverImage?.publicId;
     if (newPublicId && newPublicId !== oldPublicId) {
-      console.log(`[Upload] Project update failed. Deleting orphan new coverImage: ${newPublicId}`);
+      console.info(`[Upload] Project update failed. Deleting orphan new coverImage: ${newPublicId}`);
       try {
         await cloudinary.uploader.destroy(newPublicId);
       } catch (destroyError) {

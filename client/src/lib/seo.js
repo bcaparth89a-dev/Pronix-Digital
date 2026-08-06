@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { publicRoutes } from "@/config/navigation";
-import { businessProfile, getLocationProfile } from "@/config/business";
+import { getLocationProfile } from "@/config/business";
 import { env } from "@/config/env";
 
 export const SITE_NAME = env.VITE_APP_NAME;

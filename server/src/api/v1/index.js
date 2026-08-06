@@ -11,6 +11,7 @@ import { uploadRouter } from "../../routes/upload.routes.js";
 import { userRouter } from "../../routes/user.routes.js";
 import { metricRouter } from "../../routes/metric.routes.js";
 import { serviceRouter } from "../../routes/service.routes.js";
+import { notificationRouter } from "../../routes/notification.routes.js";
 
 export const apiRouter = Router();
 
@@ -26,3 +27,4 @@ apiRouter.use("/stats", statsRouter);
 apiRouter.use("/upload", uploadRouter);
 apiRouter.use("/metrics", metricRouter);
 apiRouter.use("/services", serviceRouter);
+apiRouter.use("/notifications", notificationRouter);

@@ -12,6 +12,7 @@ export function contactDto(contact) {
     message: contact.message,
     source: contact.source,
     status: contact.status,
+    notes: contact.notes,
     metadata: contact.metadata,
     createdAt: contact.createdAt,
     updatedAt: contact.updatedAt,

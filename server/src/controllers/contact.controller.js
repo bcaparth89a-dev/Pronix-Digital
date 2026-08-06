@@ -33,3 +33,23 @@ export const deleteContact = asyncHandler(async (req, res) => {
   res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, contact, "Contact deleted"));
 });
 
+export const getContactsAnalytics = asyncHandler(async (req, res) => {
+  const analytics = await contactService.getAnalytics();
+  res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, analytics, "Contact analytics fetched"));
+});
+
+export const updateContactNotes = asyncHandler(async (req, res) => {
+  const contact = await contactService.updateNotes(req.validated.params.id, req.validated.body.notes);
+  res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, contact, "Contact notes updated"));
+});
+
+export const bulkDeleteContacts = asyncHandler(async (req, res) => {
+  await contactService.bulkDelete(req.validated.body.ids);
+  res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, null, "Contacts deleted in bulk"));
+});
+
+export const bulkUpdateContactsStatus = asyncHandler(async (req, res) => {
+  await contactService.bulkUpdateStatus(req.validated.body.ids, req.validated.body.status);
+  res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, null, "Contacts status updated in bulk"));
+});
+

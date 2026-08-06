@@ -1,7 +1,6 @@
 import { cloudinary } from "../config/cloudinary.js";
 import { httpStatus } from "../constants/httpStatus.js";
 import { blogService } from "../services/blog.service.js";
-import { blogRepository } from "../repositories/blog.repository.js";
 import { Blog } from "../models/Blog.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -30,7 +29,7 @@ export const createBlog = asyncHandler(async (req, res) => {
     res.status(httpStatus.CREATED).json(new ApiResponse(httpStatus.CREATED, blog, "Blog created"));
   } catch (error) {
     if (req.validated?.body?.coverImage?.publicId) {
-      console.log(`[Upload] Blog creation failed. Deleting orphan coverImage from Cloudinary: ${req.validated.body.coverImage.publicId}`);
+      console.info(`[Upload] Blog creation failed. Deleting orphan coverImage from Cloudinary: ${req.validated.body.coverImage.publicId}`);
       try {
         await cloudinary.uploader.destroy(req.validated.body.coverImage.publicId);
       } catch (destroyError) {
@@ -45,7 +44,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
   let existingBlog = null;
   try {
     existingBlog = await blogService.getById(req.validated.params.id);
-  } catch (err) {
+  } catch {
     // Ignore error
   }
 
@@ -56,7 +55,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
     const newPublicId = req.validated?.body?.coverImage?.publicId;
     const oldPublicId = existingBlog?.coverImage?.publicId;
     if (newPublicId && newPublicId !== oldPublicId) {
-      console.log(`[Upload] Blog update failed. Deleting orphan new coverImage: ${newPublicId}`);
+      console.info(`[Upload] Blog update failed. Deleting orphan new coverImage: ${newPublicId}`);
       try {
         await cloudinary.uploader.destroy(newPublicId);
       } catch (destroyError) {

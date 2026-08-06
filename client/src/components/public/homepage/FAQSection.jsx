@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { m, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { usePublicFaqs } from "@/features/public/usePublicFaqs";
 import { useSeoMetadata } from "@/lib/seo";
@@ -19,7 +19,7 @@ function FaqAccordionItem({ faq, isOpen, onToggle }) {
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
-          <m.div
+          <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -29,7 +29,7 @@ function FaqAccordionItem({ faq, isOpen, onToggle }) {
             <p className="pb-4 pt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground max-w-3xl">
               {faq.answer}
             </p>
-          </m.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

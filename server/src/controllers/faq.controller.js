@@ -1,6 +1,5 @@
 import { httpStatus } from "../constants/httpStatus.js";
 import { faqService } from "../services/faq.service.js";
-import { faqRepository } from "../repositories/faq.repository.js";
 import { FAQ } from "../models/FAQ.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";

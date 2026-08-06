@@ -7,6 +7,7 @@ const contactSchema = new mongoose.Schema(
       required: true,
       trim: true,
       maxlength: 120,
+      index: true,
     },
     email: {
       type: String,
@@ -19,6 +20,7 @@ const contactSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 30,
+      index: true,
     },
     company: {
       type: String,
@@ -48,9 +50,13 @@ const contactSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["new", "in-review", "contacted", "qualified", "closed", "spam"],
+      enum: ["new", "contacted", "in-progress", "closed", "spam"],
       default: "new",
       index: true,
+    },
+    notes: {
+      type: String,
+      default: "",
     },
     metadata: {
       ipAddress: String,
@@ -63,6 +69,7 @@ const contactSchema = new mongoose.Schema(
   },
 );
 
+contactSchema.index({ createdAt: -1 });
 contactSchema.index({ name: "text", email: "text", company: "text", message: "text" });
 
 export const Contact = mongoose.model("Contact", contactSchema);

@@ -5,6 +5,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { publicRoutes } from "@/config/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { AdminNotificationBell } from "@/components/admin/AdminNotificationBell";
 
 export function AdminLayout() {
   const navigate = useNavigate();
@@ -38,10 +39,13 @@ export function AdminLayout() {
                 <p className="text-xs text-muted-foreground">{user?.email}</p>
               </div>
             </div>
-            <Button type="button" variant="outline" size="sm" onClick={handleLogout}>
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
+            <div className="flex items-center gap-3">
+              <AdminNotificationBell />
+              <Button type="button" variant="outline" size="sm" onClick={handleLogout}>
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            </div>
           </header>
           <main className="flex-1 p-4 md:p-6">
             <Outlet />

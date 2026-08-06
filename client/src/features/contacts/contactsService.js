@@ -25,4 +25,24 @@ export const contactsService = {
     const response = await apiClient.post("/contacts", payload);
     return response.data.data;
   },
+
+  async updateNotes(id, notes) {
+    const response = await apiClient.patch(`/contacts/${id}/notes`, { notes });
+    return response.data.data;
+  },
+
+  async bulkDelete(ids) {
+    const response = await apiClient.post("/contacts/bulk-delete", { ids });
+    return response.data.data;
+  },
+
+  async bulkUpdateStatus(ids, status) {
+    const response = await apiClient.patch("/contacts/bulk-status", { ids, status });
+    return response.data.data;
+  },
+
+  async getAnalytics() {
+    const response = await apiClient.get("/contacts/analytics");
+    return response.data.data;
+  },
 };

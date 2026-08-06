@@ -1,4 +1,4 @@
-import { m } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -134,7 +134,7 @@ export function HeroSection() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-8 lg:gap-16 items-center justify-between max-w-[1300px] mx-auto w-full hero-grid-container">
           {/* Left side: content */}
           <div className="md:col-span-7 lg:col-span-6 space-y-4 lg:space-y-5 hero-left-column">
-            <m.h1
+            <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
@@ -142,18 +142,18 @@ export function HeroSection() {
               style={{ fontSize: "clamp(2.5rem, 5.2vw, 4.5rem)" }}
             >
               Software that helps your business <span className="italic text-primary font-normal">grow faster</span>.
-            </m.h1>
+            </motion.h1>
 
-            <m.p
+            <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.08 }}
               className="text-xs sm:text-sm leading-relaxed text-muted-foreground max-w-xl hero-paragraph"
             >
               We design and build premium business websites, custom mobile apps, and software tools that streamline your operations and scale as your business grows.
-            </m.p>
+            </motion.p>
 
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.16 }}
@@ -172,10 +172,10 @@ export function HeroSection() {
               >
                 <Link to={publicRoutes.portfolio}>View Completed Work</Link>
               </Button>
-            </m.div>
+            </motion.div>
 
             {/* Metrics beneath CTAs */}
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -192,18 +192,18 @@ export function HeroSection() {
                   <div className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-muted-foreground mt-0.5 leading-tight">{item.label}</div>
                 </div>
               ))}
-            </m.div>
+            </motion.div>
           </div>
 
           {/* Right side: animated capabilities marquee */}
           <div className="md:col-span-5 lg:col-span-6 w-full mt-4 md:mt-0 flex justify-center md:justify-end capability-panel-container hero-right-column">
-            <m.div
+            <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65, delay: 0.15 }}
             >
               <CapabilitySection />
-            </m.div>
+            </motion.div>
           </div>
         </div>
       </div>

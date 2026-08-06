@@ -41,23 +41,23 @@ async function issueTokenPair(user, requestMeta = {}, replacedTokenHash) {
 
 export const authService = {
   async loginAdmin({ email, password }, requestMeta = {}) {
-    console.log("========== LOGIN START ==========");
-    console.log("EMAIL RECEIVED:", email);
+    console.info("========== LOGIN START ==========");
+    console.info("EMAIL RECEIVED:", email);
 
     const user = await userRepository.findByEmailWithPassword(email);
 
-    console.log("USER FOUND:", user);
+    console.info("USER FOUND:", user);
 
     if (!user || user.role !== "admin" || !user.isActive) {
-      console.log("USER NOT FOUND OR NOT ADMIN");
+      console.info("USER NOT FOUND OR NOT ADMIN");
       throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid admin credentials");
     }
 
-    console.log("HASH FROM DB:", user.password);
+    console.info("HASH FROM DB:", user.password);
 
     const passwordMatches = await comparePassword(password, user.password);
 
-    console.log("PASSWORD MATCH:", passwordMatches);
+    console.info("PASSWORD MATCH:", passwordMatches);
 
     if (!passwordMatches) {
       throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid admin credentials");

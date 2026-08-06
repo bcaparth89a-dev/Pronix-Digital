@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { m, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import {
   Globe,
   Smartphone,

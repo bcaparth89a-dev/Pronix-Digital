@@ -1,6 +1,5 @@
 import { publicRoutes } from "@/config/navigation";
 import { businessProfile, getLocationProfile } from "@/config/business";
-import { env } from "@/config/env";
 import {
   normalizeText,
   toAbsoluteUrl,

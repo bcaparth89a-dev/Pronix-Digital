@@ -29,7 +29,6 @@ import {
   HelpCircle,
   Loader2,
 } from "lucide-react";
-import { apiClient } from "@/services/apiClient";
 
 const Icons = {
   Globe,

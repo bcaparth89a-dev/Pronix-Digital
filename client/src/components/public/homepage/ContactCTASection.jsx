@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { m } from "framer-motion";
 import { Mail, ShieldCheck, Layers3, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { publicRoutes } from "@/config/navigation";

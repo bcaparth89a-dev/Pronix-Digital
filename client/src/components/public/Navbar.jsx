@@ -19,7 +19,6 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const logoClassName = "h-7 w-auto object-contain sm:h-8";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);

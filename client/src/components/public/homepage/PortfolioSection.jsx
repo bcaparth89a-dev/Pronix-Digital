@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { m } from "framer-motion";
 import {
   ArrowRight,
   FolderKanban,
@@ -11,7 +10,7 @@ import { publicRoutes } from "@/config/navigation";
 import { usePublicBlogs } from "@/features/public/usePublicBlogs";
 import { useFeaturedProjects } from "@/features/public/usePublicProjects";
 import { FadeIn, FadeInItem, FadeInStagger } from "@/lib/motion";
-import { cn, optimizeImageUrl } from "@/lib/utils";
+import { optimizeImageUrl } from "@/lib/utils";
 import {
   SelectedWorkDots,
   JournalDots,
