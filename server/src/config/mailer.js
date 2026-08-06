@@ -1,11 +1,13 @@
 import nodemailer from "nodemailer";
 import dns from "dns";
+import net from "net";
+import tls from "tls";
 import { env } from "./env.js";
 import { logger } from "../utils/logger.js";
 
 logger.info("Creating SMTP transporter...");
 
-// Print configurations for verification (without leaking password characters)
+// Print configurations for verification (without leaking password credentials)
 logger.info(`EMAIL_USER loaded: ${env.EMAIL_USER ? env.EMAIL_USER : "Not Configured"}`);
 logger.info(`EMAIL_PASS loaded: ${env.EMAIL_PASS ? "Configured" : "Not Configured"}`);
 logger.info(`EMAIL_SERVICE loaded: ${env.EMAIL_SERVICE ? env.EMAIL_SERVICE : "Not Configured"}`);
@@ -21,46 +23,68 @@ if (typeof dns.setDefaultResultOrder === "function") {
   dns.setDefaultResultOrder("ipv4first");
 }
 
-// Run Diagnostic DNS lookups on Startup
-logger.info(`[Diagnostics] Performing DNS lookup for SMTP host: ${smtpHost}...`);
+// Custom connection factory that resolves hostname to IPv4 and initiates socket connection
+const customCreateConnection = (options, callback) => {
+  const host = options.host || smtpHost;
+  const port = options.port || smtpPort;
+  const secure = options.secure !== undefined ? options.secure : smtpSecure;
 
-// Resolve IPv4
-dns.resolve4(smtpHost, (err, addresses) => {
-  if (err) {
-    logger.error(`[Diagnostics] IPv4 DNS resolution failed for ${smtpHost}: ${err.message}`);
-  } else {
-    logger.info(`[Diagnostics] IPv4 DNS resolved addresses: ${JSON.stringify(addresses)}`);
-  }
-});
+  logger.info(`[SocketFactory] Resolving host: ${host} using IPv4...`);
 
-// Resolve IPv6
-dns.resolve6(smtpHost, (err, addresses) => {
-  if (err) {
-    logger.info(`[Diagnostics] IPv6 DNS resolution failed or unavailable for ${smtpHost}: ${err.message}`);
-  } else {
-    logger.info(`[Diagnostics] IPv6 DNS resolved addresses: ${JSON.stringify(addresses)}`);
-  }
-});
+  dns.lookup(host, { family: 4 }, (dnsErr, ipAddress) => {
+    if (dnsErr) {
+      logger.error(`[SocketFactory] DNS resolution failed for ${host}: ${dnsErr.message}`);
+      return callback(dnsErr);
+    }
 
-// Default OS resolver lookup (this determines what Node.js net connection will try first by default)
-dns.lookup(smtpHost, (err, address, family) => {
-  if (err) {
-    logger.error(`[Diagnostics] Default DNS lookup failed for ${smtpHost}: ${err.message}`);
-  } else {
-    logger.info(`[Diagnostics] Default DNS resolved IP: ${address} (Family: IPv${family})`);
-  }
-});
+    logger.info(`[SocketFactory] Resolved ${host} to IPv4: ${ipAddress}`);
+    logger.info(`[SocketFactory] Connecting to ${ipAddress}:${port} (secure: ${secure})...`);
 
-// Custom DNS lookup function to force IPv4 only
-const customLookup = (hostname, options, callback) => {
-  let cb = callback;
-  let lookupOptions = options;
-  if (typeof options === "function") {
-    cb = options;
-    lookupOptions = {};
-  }
-  const mergedOptions = Object.assign({}, lookupOptions || {}, { family: 4 });
-  return dns.lookup(hostname, mergedOptions, cb);
+    let socket;
+    let connected = false;
+
+    const handleConnectError = (err) => {
+      if (!connected) {
+        logger.error(`[SocketFactory] Connection failed to ${ipAddress}:${port}. Error: ${err.message}`);
+        callback(err);
+      }
+    };
+
+    if (secure) {
+      // SMTPS (Implicit TLS) on port 465
+      const tlsOptions = {
+        host: host,
+        port: port,
+        servername: host,
+        rejectUnauthorized: true,
+        ...options.tls,
+      };
+
+      socket = tls.connect(port, ipAddress, tlsOptions, () => {
+        connected = true;
+        logger.info(`[SocketFactory] SSL/TLS Connection established with ${ipAddress}:${port}`);
+        callback(null, socket);
+      });
+    } else {
+      // Plaintext TCP (STARTTLS) on port 587/25
+      socket = net.connect(port, ipAddress, () => {
+        connected = true;
+        logger.info(`[SocketFactory] TCP Connection established with ${ipAddress}:${port}`);
+        callback(null, socket);
+      });
+    }
+
+    socket.on("error", handleConnectError);
+
+    const timeout = options.connectionTimeout || 10000;
+    socket.setTimeout(timeout, () => {
+      if (!connected) {
+        logger.error(`[SocketFactory] Connection timeout after ${timeout}ms connecting to ${ipAddress}:${port}`);
+        socket.destroy();
+        callback(new Error(`ETIMEDOUT: Connection to ${host} (${ipAddress}) timed out`));
+      }
+    });
+  });
 };
 
 const transportConfig = {
@@ -71,9 +95,8 @@ const transportConfig = {
     user: env.EMAIL_USER,
     pass: env.EMAIL_PASS,
   },
-  // Custom lookup forcing IPv4
-  lookup: customLookup,
-  // Timeouts to prevent hanging sockets
+  // Inject the custom connection factory forcing IPv4 resolution
+  createConnection: customCreateConnection,
   connectionTimeout: 10000,
   greetingTimeout: 10000,
   socketTimeout: 15000,
@@ -87,7 +110,7 @@ logger.info("[Diagnostics] Transporter Configuration Loaded:");
 logger.info(`  - Host: ${transportConfig.host}`);
 logger.info(`  - Port: ${transportConfig.port}`);
 logger.info(`  - Secure (implicit SSL/TLS): ${transportConfig.secure}`);
-logger.info(`  - Custom IPv4 Lookup: Configured`);
+logger.info(`  - Custom Socket Factory: Configured (Forces IPv4)`);
 logger.info(`  - Connection Timeout: ${transportConfig.connectionTimeout}ms`);
 logger.info(`  - Greeting Timeout: ${transportConfig.greetingTimeout}ms`);
 logger.info(`  - Socket Timeout: ${transportConfig.socketTimeout}ms`);
