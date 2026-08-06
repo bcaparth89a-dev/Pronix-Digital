@@ -1,7 +1,5 @@
 import nodemailer from "nodemailer";
 import dns from "dns";
-import net from "net";
-import tls from "tls";
 import { env } from "./env.js";
 import { logger } from "../utils/logger.js";
 
@@ -23,119 +21,62 @@ if (typeof dns.setDefaultResultOrder === "function") {
   dns.setDefaultResultOrder("ipv4first");
 }
 
-// Custom connection factory that resolves hostname to IPv4 and initiates socket connection
-const customCreateConnection = (options, callback) => {
-  const host = options.host || smtpHost;
-  const port = options.port || smtpPort;
-  const secure = options.secure !== undefined ? options.secure : smtpSecure;
-
-  logger.info(`[SocketFactory] Resolving host: ${host} using IPv4...`);
-
-  dns.lookup(host, { family: 4 }, (dnsErr, ipAddress) => {
-    if (dnsErr) {
-      logger.error(`[SocketFactory] DNS resolution failed for ${host}: ${dnsErr.message}`);
-      return callback(dnsErr);
-    }
-
-    logger.info(`[SocketFactory] Resolved ${host} to IPv4: ${ipAddress}`);
-    logger.info(`[SocketFactory] Connecting to ${ipAddress}:${port} (secure: ${secure})...`);
-
-    let socket;
-    let connected = false;
-
-    const handleConnectError = (err) => {
-      if (!connected) {
-        logger.error(`[SocketFactory] Connection failed to ${ipAddress}:${port}. Error: ${err.message}`);
-        callback(err);
-      }
-    };
-
-    if (secure) {
-      // SMTPS (Implicit TLS) on port 465
-      const tlsOptions = {
-        host: host,
-        port: port,
-        servername: host,
-        rejectUnauthorized: true,
-        ...options.tls,
-      };
-
-      socket = tls.connect(port, ipAddress, tlsOptions, () => {
-        connected = true;
-        logger.info(`[SocketFactory] SSL/TLS Connection established with ${ipAddress}:${port}`);
-        callback(null, socket);
-      });
-    } else {
-      // Plaintext TCP (STARTTLS) on port 587/25
-      socket = net.connect(port, ipAddress, () => {
-        connected = true;
-        logger.info(`[SocketFactory] TCP Connection established with ${ipAddress}:${port}`);
-        callback(null, socket);
-      });
-    }
-
-    socket.on("error", handleConnectError);
-
-    const timeout = options.connectionTimeout || 10000;
-    socket.setTimeout(timeout, () => {
-      if (!connected) {
-        logger.error(`[SocketFactory] Connection timeout after ${timeout}ms connecting to ${ipAddress}:${port}`);
-        socket.destroy();
-        callback(new Error(`ETIMEDOUT: Connection to ${host} (${ipAddress}) timed out`));
-      }
-    });
-  });
-};
-
-const transportConfig = {
-  host: smtpHost,
-  port: smtpPort,
-  secure: smtpSecure,
-  auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
-  },
-  // Inject the custom connection factory forcing IPv4 resolution
-  createConnection: customCreateConnection,
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 15000,
-  tls: {
-    rejectUnauthorized: true,
-  },
-};
-
-// Log SMTP Configuration (Excluding credentials)
-logger.info("[Diagnostics] Transporter Configuration Loaded:");
-logger.info(`  - Host: ${transportConfig.host}`);
-logger.info(`  - Port: ${transportConfig.port}`);
-logger.info(`  - Secure (implicit SSL/TLS): ${transportConfig.secure}`);
-logger.info(`  - Custom Socket Factory: Configured (Forces IPv4)`);
-logger.info(`  - Connection Timeout: ${transportConfig.connectionTimeout}ms`);
-logger.info(`  - Greeting Timeout: ${transportConfig.greetingTimeout}ms`);
-logger.info(`  - Socket Timeout: ${transportConfig.socketTimeout}ms`);
-logger.info(`  - TLS RejectUnauthorized: ${transportConfig.tls.rejectUnauthorized}`);
-
-let transport = null;
+export let mailer = null;
 
 if (env.EMAIL_USER && env.EMAIL_PASS) {
-  transport = nodemailer.createTransport(transportConfig);
-  logger.info("Verifying SMTP connection...");
-  
-  transport.verify((error) => {
-    if (error) {
-      logger.error(`[Diagnostics] SMTP verify error: Code=${error.code}, Message=${error.message}, Syscall=${error.syscall || "none"}`);
-      if (error.code === "EAUTH") {
-        logger.error("SMTP authentication failed.");
-      } else {
-        logger.error("SMTP connection failed.");
-      }
-    } else {
-      logger.info("SMTP verified successfully.");
+  logger.info(`[Diagnostics] Performing DNS lookup for SMTP host: ${smtpHost}...`);
+
+  // Resolve IPv4 directly to bypass any OS / container DNS level IPv6 resolution
+  dns.lookup(smtpHost, { family: 4 }, (dnsErr, address) => {
+    if (dnsErr) {
+      logger.error(`[Diagnostics] DNS lookup failed for ${smtpHost}: ${dnsErr.message}`);
+      logger.error("SMTP connection failed.");
+      return;
+    }
+
+    logger.info(`Connecting to:\n${address}\nFamily: IPv4`);
+    logger.info("SMTP configuration loaded.");
+
+    const transportConfig = {
+      host: address, // Direct IPv4 IP address to bypass client resolution entirely
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: env.EMAIL_USER,
+        pass: env.EMAIL_PASS,
+      },
+      // Root servername overrides STARTTLS host parsing
+      servername: smtpHost,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+      tls: {
+        servername: smtpHost, // Crucial for TLS certificate match validation
+        rejectUnauthorized: true,
+      },
+    };
+
+    try {
+      mailer = nodemailer.createTransport(transportConfig);
+      logger.info("Verifying SMTP connection...");
+
+      mailer.verify((error) => {
+        if (error) {
+          logger.error(`[Diagnostics] SMTP verify error: Code=${error.code}, Message=${error.message}`);
+          if (error.code === "EAUTH") {
+            logger.error("SMTP authentication failed.");
+          } else {
+            logger.error("SMTP connection failed.");
+          }
+        } else {
+          logger.info("SMTP verified successfully.");
+        }
+      });
+    } catch (createErr) {
+      logger.error(`[SMTP] Transporter creation failed: ${createErr.message}`);
+      logger.error("SMTP connection failed.");
     }
   });
 } else {
   logger.warn("SMTP connection failed. Reason: Credentials not provided.");
 }
-
-export const mailer = transport;
