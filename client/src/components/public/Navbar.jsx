@@ -189,22 +189,13 @@ export function Navbar() {
                 className="relative z-10 flex items-center justify-between min-h-[88px] border-b border-white/[0.08] bg-gradient-to-b from-[#221A15]/40 to-transparent backdrop-blur-[2px] shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
               >
                 {/* Brand Area */}
-                <div className="flex items-center gap-3">
-                  {/* Logo Image */}
-                  <img
-                    src="/branding/logo-horizontal.svg"
-                    alt="Pronix Digital"
-                    className="h-10 w-auto object-contain shrink-0"
-                  />
-                  {/* Text Branding */}
-                  <div className="flex flex-col justify-center leading-none">
-                    <span className="text-[20px] font-bold text-white tracking-[0.5px] font-display">
-                      Pronix Digital
-                    </span>
-                    <span className="text-[13px] text-stone-300 opacity-70 font-medium mt-1">
-                      Digital Solutions Agency
-                    </span>
-                  </div>
+                <div className="flex flex-col justify-center leading-[1.1] tracking-[-0.02em]">
+                  <span className="text-[28px] font-bold text-white font-display">
+                    Pronix
+                  </span>
+                  <span className="text-[28px] font-bold text-white font-display">
+                    Digital
+                  </span>
                 </div>
 
                 {/* Close Button */}
