@@ -146,32 +146,48 @@ export function Chatbot() {
     });
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      if (window.innerWidth < 768) {
+        document.body.style.overflow = "hidden";
+      }
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   if (shouldHide) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end font-sans">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[100] font-sans">
       {/* -- Expandable Chat Panel -- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 15, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            exit={{ opacity: 0, y: 15, scale: 0.97 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{
+              width: "min(380px, calc(100vw - 32px))",
+              height: "min(600px, calc(100dvh - 110px))",
+            }}
             className={cn(
-              "mb-4 flex h-[500px] w-[350px] flex-col rounded-2xl border border-border/80",
-              "bg-background/95 shadow-2xl backdrop-blur-md sm:w-[380px] overflow-hidden"
+              "absolute bottom-[72px] right-0 flex flex-col rounded-[20px] border border-border/85",
+              "bg-background shadow-2xl overflow-hidden"
             )}
           >
             {/* -- Header -- */}
-            <div className="flex items-center justify-between border-b border-border/60 bg-primary px-4 py-3.5 text-primary-foreground shadow-sm">
+            <div className="flex items-center justify-between border-b border-border/60 bg-primary px-5 py-4 text-primary-foreground shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
                   <Zap className="h-5 w-5 text-white fill-white" />
                 </div>
                 <div>
                   <h3 className="font-display text-sm font-semibold tracking-tight text-white">Pronix AI</h3>
-                  <span className="text-[10px] text-white/70 flex items-center gap-1">
+                  <span className="text-[10px] text-white/85 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Online • Response in seconds
                   </span>
@@ -179,10 +195,10 @@ export function Chatbot() {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-md p-1.5 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-white/80 hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
                 aria-label="Close Chat"
               >
-                <X className="h-4 w-4" />
+                <X className="h-4.5 w-4.5" />
               </button>
             </div>
 
@@ -192,20 +208,20 @@ export function Chatbot() {
                 <div
                   key={msg.id}
                   className={cn(
-                    "flex flex-col max-w-[82%]",
+                    "flex flex-col max-w-[75%]",
                     msg.sender === "user" ? "ml-auto items-end" : "mr-auto items-start"
                   )}
                 >
                   <div
                     className={cn(
-                      "rounded-2xl px-3.5 py-2.5 shadow-sm text-sm border",
+                      "rounded-[18px] px-4 py-2.5 shadow-sm text-[13px] border leading-relaxed",
                       msg.sender === "user"
                         ? "bg-primary text-primary-foreground border-primary/20 rounded-tr-none"
                         : "bg-muted/65 text-slate-800 border-border/50 rounded-tl-none"
                     )}
                   >
                     {msg.sender === "user" ? (
-                      <p className="leading-relaxed">{msg.text}</p>
+                      <p>{msg.text}</p>
                     ) : (
                       <div className="space-y-1">{renderMarkdown(msg.text)}</div>
                     )}
@@ -218,8 +234,8 @@ export function Chatbot() {
 
               {/* -- Typing indicator -- */}
               {isLoading && (
-                <div className="flex flex-col items-start max-w-[82%] mr-auto">
-                  <div className="flex items-center gap-1 bg-muted/65 border border-border/50 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+                <div className="flex flex-col items-start max-w-[75%] mr-auto">
+                  <div className="flex items-center gap-1 bg-muted/65 border border-border/50 rounded-[18px] rounded-tl-none px-4 py-3 shadow-sm">
                     <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:-0.3s]" />
                     <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:-0.15s]" />
                     <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce" />
@@ -231,16 +247,16 @@ export function Chatbot() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* -- Suggested Questions Pills -- */}
-            <div className="px-4 py-2 bg-muted/30 border-t border-border/40 overflow-x-auto whitespace-nowrap flex gap-2 no-scrollbar">
+            {/* -- Suggested Questions Pills (Wrapped for Premium Mobile View) -- */}
+            <div className="px-4 py-3 bg-muted/20 border-t border-border/40 flex flex-wrap gap-1.5">
               {SUGGESTED_PROMPTS.map((prompt) => (
                 <button
                   key={prompt}
                   onClick={() => handleSend(prompt)}
                   disabled={isLoading}
                   className={cn(
-                    "text-[11px] font-medium px-3 py-1.5 rounded-full border border-border/60 bg-background",
-                    "text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all shadow-sm cursor-pointer whitespace-nowrap flex-shrink-0"
+                    "text-[10px] font-semibold px-3 py-1.5 rounded-full border border-border/60 bg-background",
+                    "text-stone-600 hover:text-stone-900 hover:border-primary/40 hover:bg-primary/5 active:scale-95 transition-all shadow-sm cursor-pointer whitespace-nowrap"
                   )}
                 >
                   {prompt}
@@ -254,7 +270,7 @@ export function Chatbot() {
                 e.preventDefault();
                 handleSend();
               }}
-              className="border-t border-border/60 p-3 bg-background flex items-center gap-2"
+              className="border-t border-border/60 p-3.5 bg-background flex items-center gap-2"
             >
               <input
                 type="text"
@@ -263,7 +279,7 @@ export function Chatbot() {
                 placeholder="Ask about Pronix Digital..."
                 disabled={isLoading}
                 className={cn(
-                  "flex-1 h-9 rounded-full border border-border/80 px-4 text-xs bg-muted/30",
+                  "flex-1 h-11 rounded-full border border-border/80 px-4 text-xs sm:text-sm bg-muted/30",
                   "focus:outline-none focus:border-primary/60 focus:bg-background transition-all",
                   "disabled:opacity-60"
                 )}
@@ -272,15 +288,15 @@ export function Chatbot() {
                 type="submit"
                 disabled={isLoading || !input.trim()}
                 className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white border-none",
-                  "hover:bg-[#5A3728] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
+                  "flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white border-none shrink-0",
+                  "hover:bg-[#5A3728] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shadow-md"
                 )}
                 aria-label="Send message"
               >
                 {isLoading ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <Send className="h-3.5 w-3.5 text-primary-foreground" />
+                  <Send className="h-4 w-4 text-primary-foreground" />
                 )}
               </button>
             </form>
@@ -295,7 +311,7 @@ export function Chatbot() {
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
           "flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground",
-          "shadow-lg cursor-pointer transition-all border border-primary/20",
+          "shadow-xl cursor-pointer transition-all border border-primary/20",
           isOpen && "rotate-90 bg-stone-900 border-stone-800"
         )}
         aria-label={isOpen ? "Close Help Desk" : "Open Help Desk"}

@@ -151,102 +151,126 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* -- Mobile menu (Full-screen overlay, thumb-friendly & bottom-oriented) -- */}
+      {/* -- Mobile menu Drawer -- */}
       <AnimatePresence>
         {mobileOpen && (
-          <Motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 15 }}
-            transition={{ type: "spring", stiffness: 350, damping: 30 }}
-            className="fixed inset-0 h-[100dvh] w-screen z-[100] bg-[#1C1612] text-stone-200 md:hidden flex flex-col p-4 pt-4 pb-4 overflow-y-auto overscroll-contain"
-          >
-            {/* Background mesh glow and lines for aesthetic technicality */}
-            <div className="absolute inset-0 bg-mesh opacity-20 pointer-events-none" />
-            <div className="absolute inset-0 bg-grid-pattern bg-grid-sm opacity-[0.015] pointer-events-none" />
-            <svg className="absolute inset-0 w-full h-full opacity-[0.05] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="15%" y1="0" x2="15%" y2="100%" stroke="currentColor" strokeWidth="0.5" />
-              <line x1="85%" y1="0" x2="85%" y2="100%" stroke="currentColor" strokeWidth="0.5" />
-            </svg>
+          <>
+            {/* Backdrop Overlay */}
+            <Motion.div
+              key="mobile-menu-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm md:hidden"
+            />
 
-            {/* Top Bar with Close button inside drawer */}
-            <div className="relative z-10 flex items-center justify-between border-b border-[#4A4038]/60 pb-2">
-              <img src="/branding/logo-horizontal.svg" alt="Pronix Digital" className="h-6 w-auto object-contain sm:h-7" />
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#4A4038] bg-[#221A15] hover:bg-[#3A312B] transition-colors focus:outline-none cursor-pointer"
-                aria-label="Close menu"
-              >
-                <X className="h-5.5 w-5.5 text-[#BFA27A]" />
-              </button>
-            </div>
+            {/* Drawer Panel */}
+            <Motion.div
+              key="mobile-menu-drawer"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 380, damping: 35 }}
+              className="fixed top-0 right-0 bottom-0 h-[100dvh] w-full max-w-[300px] min-[375px]:max-w-[320px] min-[412px]:max-w-[340px] z-[100] bg-[#1C1612] text-stone-200 md:hidden flex flex-col p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl border-l border-[#4A4038]/30 overflow-y-auto overscroll-contain"
+            >
+              {/* Background mesh glow and lines for aesthetic technicality */}
+              <div className="absolute inset-0 bg-mesh opacity-20 pointer-events-none" />
+              <div className="absolute inset-0 bg-grid-pattern bg-grid-sm opacity-[0.015] pointer-events-none" />
 
-            {/* Navigation links with large targets */}
-            <div className="relative z-10 flex flex-col gap-0.5 py-1 flex-1">
-              <span className="text-[9px] font-bold uppercase tracking-widest text-stone-500 mb-0.5 px-3">Navigation</span>
-              <nav className="flex flex-col gap-0.5" aria-label="Mobile navigation">
-                {NAV_LINKS.map((link, i) => (
-                  <Motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04, type: "spring", stiffness: 300 }}
-                  >
-                    <NavLink
-                      to={link.href}
-                      end={link.end}
-                      className={({ isActive }) =>
-                        cn(
-                          "flex items-center justify-between landscape-compact py-2.5 px-3 rounded-lg transition-all",
-                          isActive
-                            ? "bg-[#3A312B]/45 text-[#BFA27A]"
-                            : "text-stone-200 hover:bg-[#2E2722]/40 hover:text-[#BFA27A]",
-                        )
-                      }
-                    >
-                      <span className="font-display text-base font-bold tracking-tight">{link.label}</span>
-                      <ArrowRight className="h-4 w-4 opacity-35" />
-                    </NavLink>
-                  </Motion.div>
-                ))}
-              </nav>
-            </div>
-
-            {/* Flex spacer to prevent overlap */}
-            <div className="min-h-[8px]" />
-
-            {/* Bottom contact info */}
-            <div className="relative z-10 space-y-3 pt-3 border-t border-[#4A4038]/60 mt-3 landscape-hide">
-              <div className="flex flex-col sm:flex-row justify-between gap-3 text-left">
-                <div className="space-y-0.5">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-500">Write to us</span>
-                  <a href="mailto:pronixdigital.tech@gmail.com" className="block text-xs font-bold text-white hover:text-[#BFA27A] transition-colors break-all">
-                    pronixdigital.tech@gmail.com
-                  </a>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-500">Call directly</span>
-                  <a href="tel:+917990101983" className="block text-xs font-bold text-white hover:text-[#BFA27A] transition-colors">
-                    +91 7990101983
-                  </a>
-                </div>
+              {/* Top Bar with Close button inside drawer */}
+              <div className="relative z-10 flex items-center justify-between border-b border-[#4A4038]/60 pb-4">
+                <img
+                  src="/branding/logo-horizontal.svg"
+                  alt="Pronix Digital"
+                  className="h-8 w-auto object-contain"
+                />
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#4A4038]/80 bg-[#221A15] hover:bg-[#3A312B] active:scale-95 transition-all focus:outline-none cursor-pointer"
+                  aria-label="Close menu"
+                >
+                  <X className="h-5 w-5 text-[#BFA27A]" />
+                </button>
               </div>
 
-              <Motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Button size="lg" className="w-full gap-2 rounded-full bg-[#BFA27A] hover:bg-[#A88B63] text-[#1C1612] shadow-none border-none text-xs h-10 font-semibold" asChild>
-                  <Link to={publicRoutes.contact}>
-                    Book Free Consultation
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </Motion.div>
-            </div>
-          </Motion.div>
+              {/* Navigation links with large targets */}
+              <div className="relative z-10 flex flex-col gap-0.5 py-4 flex-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2 px-1">Navigation</span>
+                <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+                  {NAV_LINKS.map((link, i) => (
+                    <Motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.03, type: "spring", stiffness: 300 }}
+                    >
+                      <NavLink
+                        to={link.href}
+                        end={link.end}
+                        className={({ isActive }) =>
+                          cn(
+                            "flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-200 active:scale-[0.98]",
+                            isActive
+                              ? "bg-[#3A312B]/60 text-[#BFA27A] font-semibold font-display"
+                              : "text-stone-200 hover:bg-[#2E2722]/30 hover:text-[#BFA27A]",
+                          )
+                        }
+                      >
+                        <span className="text-sm font-semibold tracking-tight">{link.label}</span>
+                        <ArrowRight className="h-4 w-4 opacity-40" />
+                      </NavLink>
+                    </Motion.div>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Flex spacer to prevent overlap */}
+              <div className="min-h-[12px]" />
+
+              {/* Bottom contact info */}
+              <div className="relative z-10 space-y-4 pt-5 border-t border-[#4A4038]/60 mt-auto">
+                <div className="space-y-3 text-left">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Write to us</span>
+                    <a
+                      href="mailto:pronixdigital.tech@gmail.com"
+                      className="block text-xs font-bold text-white hover:text-[#BFA27A] transition-colors break-all py-1"
+                    >
+                      pronixdigital.tech@gmail.com
+                    </a>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Call directly</span>
+                    <a
+                      href="tel:+917990101983"
+                      className="block text-xs font-bold text-white hover:text-[#BFA27A] transition-colors py-1"
+                    >
+                      +91 7990101983
+                    </a>
+                  </div>
+                </div>
+
+                <Motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                  className="pt-1"
+                >
+                  <Button
+                    size="lg"
+                    className="w-full gap-2 rounded-xl bg-[#BFA27A] hover:bg-[#A88B63] active:scale-[0.98] text-[#1C1612] shadow-none border-none text-xs h-11 font-semibold transition-all duration-200"
+                    asChild
+                  >
+                    <Link to={publicRoutes.contact}>
+                      Book Free Consultation
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </Motion.div>
+              </div>
+            </Motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
