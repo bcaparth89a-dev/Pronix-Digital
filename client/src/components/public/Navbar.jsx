@@ -172,30 +172,53 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 380, damping: 35 }}
-              className="fixed top-0 right-0 bottom-0 h-[100dvh] w-full max-w-[300px] min-[375px]:max-w-[320px] min-[412px]:max-w-[340px] z-[100] bg-[#1C1612] text-stone-200 md:hidden flex flex-col p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl border-l border-[#4A4038]/30 overflow-y-auto overscroll-contain"
+              className="fixed top-0 right-0 bottom-0 h-[100dvh] w-full max-w-[300px] min-[375px]:max-w-[320px] min-[412px]:max-w-[340px] z-[100] bg-[#1C1612] text-stone-200 md:hidden flex flex-col shadow-2xl border-l border-white/[0.05] overflow-y-auto overscroll-contain"
             >
               {/* Background mesh glow and lines for aesthetic technicality */}
               <div className="absolute inset-0 bg-mesh opacity-20 pointer-events-none" />
               <div className="absolute inset-0 bg-grid-pattern bg-grid-sm opacity-[0.015] pointer-events-none" />
 
-              {/* Top Bar with Close button inside drawer */}
-              <div className="relative z-10 flex items-center justify-between border-b border-[#4A4038]/60 pb-4">
-                <img
-                  src="/branding/logo-horizontal.svg"
-                  alt="Pronix Digital"
-                  className="h-8 w-auto object-contain"
-                />
+              {/* Dedicated Header Area with Glassmorphism and Divider */}
+              <div
+                style={{
+                  paddingTop: "calc(16px + env(safe-area-inset-top))",
+                  paddingLeft: "20px",
+                  paddingRight: "20px",
+                  paddingBottom: "18px",
+                }}
+                className="relative z-10 flex items-center justify-between min-h-[88px] border-b border-white/[0.08] bg-gradient-to-b from-[#221A15]/40 to-transparent backdrop-blur-[2px] shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
+              >
+                {/* Brand Area */}
+                <div className="flex items-center gap-3">
+                  {/* Logo Image */}
+                  <img
+                    src="/branding/logo-horizontal.svg"
+                    alt="Pronix Digital"
+                    className="h-10 w-auto object-contain shrink-0"
+                  />
+                  {/* Text Branding */}
+                  <div className="flex flex-col justify-center leading-none">
+                    <span className="text-[20px] font-bold text-white tracking-[0.5px] font-display">
+                      Pronix Digital
+                    </span>
+                    <span className="text-[13px] text-stone-300 opacity-70 font-medium mt-1">
+                      Digital Solutions Agency
+                    </span>
+                  </div>
+                </div>
+
+                {/* Close Button */}
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#4A4038]/80 bg-[#221A15] hover:bg-[#3A312B] active:scale-95 transition-all focus:outline-none cursor-pointer"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-[#221A15]/70 hover:bg-[#3A312B]/85 active:scale-95 hover:scale-105 transition-all duration-200 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.15)] focus:outline-none cursor-pointer"
                   aria-label="Close menu"
                 >
-                  <X className="h-5 w-5 text-[#BFA27A]" />
+                  <X className="h-5.5 w-5.5 text-[#BFA27A]" />
                 </button>
               </div>
 
               {/* Navigation links with large targets */}
-              <div className="relative z-10 flex flex-col gap-0.5 py-4 flex-1">
+              <div className="relative z-10 flex flex-col gap-0.5 px-5 py-5 flex-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2 px-1">Navigation</span>
                 <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
                   {NAV_LINKS.map((link, i) => (
@@ -229,7 +252,7 @@ export function Navbar() {
               <div className="min-h-[12px]" />
 
               {/* Bottom contact info */}
-              <div className="relative z-10 space-y-4 pt-5 border-t border-[#4A4038]/60 mt-auto">
+              <div className="relative z-10 space-y-4 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] border-t border-white/[0.08] mt-auto">
                 <div className="space-y-3 text-left">
                   <div className="space-y-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Write to us</span>
