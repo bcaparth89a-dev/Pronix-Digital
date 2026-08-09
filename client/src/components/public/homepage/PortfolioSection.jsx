@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { m as Motion } from "framer-motion";
+
 import {
   ArrowRight,
   FolderKanban,
@@ -62,7 +64,7 @@ function EmptyState({ icon, title, description, action }) {
 
 function ProjectCard({ project }) {
   return (
-    <m.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
+    <Motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
       <Link
         to={publicRoutes.portfolioDetail(project.slug)}
         className="group flex flex-col h-full overflow-hidden rounded-[20px] border border-border bg-card transition-all duration-300 hover:border-primary/45 hover:shadow-xl-soft"
@@ -106,13 +108,13 @@ function ProjectCard({ project }) {
           </div>
         </div>
       </Link>
-    </m.div>
+    </Motion.div>
   );
 }
 
 function BlogCard({ blog }) {
   return (
-    <m.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
+    <Motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
       <Link
         to={publicRoutes.blogDetail(blog.slug)}
         className="group flex h-full flex-col rounded-[20px] border border-border bg-card p-5 transition-all duration-300 hover:border-primary/45 hover:shadow-xl-soft"
@@ -142,7 +144,7 @@ function BlogCard({ blog }) {
           </div>
         </div>
       </Link>
-    </m.div>
+    </Motion.div>
   );
 }
 
