@@ -65,9 +65,38 @@ app.use(
 );
 app.use(compression());
 app.use(permissionsPolicy);
+const allowedOrigins = new Set([
+  "https://pronixdigital.tech",
+  "https://www.pronixdigital.tech",
+  "https://pronix-digital-client-de19.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:4173",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:4173",
+]);
+
+if (env.CLIENT_URL) allowedOrigins.add(env.CLIENT_URL);
+if (env.SITE_URL) allowedOrigins.add(env.SITE_URL);
+
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, postman, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (
+        allowedOrigins.has(origin) ||
+        /^https:\/\/pronix-digital-client-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
