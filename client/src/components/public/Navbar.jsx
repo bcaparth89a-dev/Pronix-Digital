@@ -191,9 +191,11 @@ export function Navbar() {
                 {/* Brand Area */}
                 <div className="flex items-center">
                   <img
-                    src="/branding/logo-horizontal.svg"
+                    src="/branding/wordmark-light.svg"
                     alt="Pronix Digital"
-                    className="h-8 w-auto object-contain shrink-0"
+                    width="120"
+                    height="32"
+                    className="h-8 w-[120px] object-contain shrink-0"
                   />
                 </div>
 
