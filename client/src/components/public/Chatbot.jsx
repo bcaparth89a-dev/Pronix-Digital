@@ -193,7 +193,7 @@ export function Chatbot() {
 
   return (
     <>
-      {/* -- Backdrop Blur Overlay (Only blurs content behind, leaving Navbar clear) -- */}
+      {/* -- Backdrop Blur Overlay (Blurs entire website including Navbar) -- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -202,7 +202,7 @@ export function Chatbot() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 z-[45] bg-[#1C1612]/12 backdrop-blur-[14px] pointer-events-auto"
+            className="fixed inset-0 z-[90] bg-[#1C1612]/15 backdrop-blur-[10px] pointer-events-auto"
             style={{ willChange: "opacity, backdrop-filter" }}
           />
         )}
