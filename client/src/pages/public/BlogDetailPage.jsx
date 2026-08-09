@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Calendar, ChevronRight, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { FadeIn, FadeInItem, FadeInStagger, ScaleIn } from "@/lib/motion";
 import { BlogDots } from "@/components/public/DotGridBackground";
 import { resolveSeoMetadata, useSeoMetadata } from "@/lib/seo";
 import { optimizeImageUrl } from "@/lib/utils";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 // -- Markdown renderer ---------------------------------------------------------
 function renderMarkdown(md) {
@@ -64,6 +65,7 @@ export function BlogDetailPage() {
   const navigate = useNavigate();
   const { data: blog, isLoading, isError } = usePublicBlog(slug);
   const { data: relatedBlogs } = useRelatedBlogs(blog?.category, slug);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const siteOrigin = typeof window !== "undefined" ? window.location.origin : "https://pronixdigital.tech";
 
@@ -197,11 +199,12 @@ export function BlogDetailPage() {
 
           {/* Cover image */}
           {blog.coverImage?.url && (
-            <ScaleIn className="mb-10 overflow-hidden rounded-[20px] border border-border">
+            <ScaleIn className="mb-10 overflow-hidden rounded-[20px] border border-border cursor-zoom-in">
               <img
                 src={optimizeImageUrl(blog.coverImage.url, 1200)}
                 alt={blog.title}
                 className="w-full aspect-[16/9] object-cover"
+                onClick={() => setSelectedImage({ url: blog.coverImage.url, alt: blog.title })}
                 width="1200"
                 height="675"
                 fetchPriority="high"
@@ -276,7 +279,12 @@ export function BlogDetailPage() {
                         <img
                           src={optimizeImageUrl(rb.coverImage.url, 600)}
                           alt={rb.title}
-                          className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-355"
+                          className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-355 cursor-zoom-in"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setSelectedImage({ url: rb.coverImage.url, alt: rb.title });
+                          }}
                           loading="lazy"
                           width="600"
                           height="338"
@@ -336,6 +344,12 @@ export function BlogDetailPage() {
           </FadeIn>
         </div>
       </section>
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

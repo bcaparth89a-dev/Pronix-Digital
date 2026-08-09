@@ -36,11 +36,42 @@ export function mongoSanitize(req, res, next) {
  * NOTE: req.query is not mutated here to avoid read-only property conflicts.
  */
 export function xssClean(req, res, next) {
-  const cleanInPlace = (obj) => {
+  const cleanInPlace = (obj, parentKey = null) => {
     if (obj && typeof obj === "object") {
+      const isArray = Array.isArray(obj);
       for (const key in obj) {
         const val = obj[key];
+        
         if (typeof val === "string") {
+          // Check context-aware fields for Projects, Blogs, and Users routes
+          const isTargetRoute = req.originalUrl && (
+            req.originalUrl.includes("/projects") || 
+            req.originalUrl.includes("/blogs") || 
+            req.originalUrl.includes("/users")
+          );
+          
+          if (isTargetRoute) {
+            let shouldBypass = false;
+            
+            if ((parentKey === "coverImage" || parentKey === "gallery" || parentKey === "avatar") && key === "url") {
+              // Validate URL format (must start with http:// or https://)
+              shouldBypass = /^(https?:\/\/)/.test(val);
+            } else if ((parentKey === "coverImage" || parentKey === "gallery" || parentKey === "avatar") && key === "publicId") {
+              // Validate Cloudinary public ID/path format: alphanumeric, slash, hyphen, underscore
+              shouldBypass = /^[a-zA-Z0-9_\-/]+$/.test(val);
+            } else if (key === "projectUrl" || key === "githubUrl" || key === "demoUrl" || key === "websiteUrl") {
+              // Validate URL format
+              shouldBypass = /^(https?:\/\/)/.test(val);
+            } else if (key === "slug") {
+              // Validate slug format: alphanumeric, hyphen, underscore
+              shouldBypass = /^[a-zA-Z0-9_-]+$/.test(val);
+            }
+            
+            if (shouldBypass) {
+              continue;
+            }
+          }
+          
           // Allow formatting/rich text fields (Markdown), but strip script and iframe tags entirely
           if (["content", "description", "longDescription", "answer"].includes(key)) {
             obj[key] = val
@@ -57,7 +88,7 @@ export function xssClean(req, res, next) {
               .replace(/\//g, "&#x2F;");
           }
         } else if (val && typeof val === "object") {
-          cleanInPlace(val);
+          cleanInPlace(val, isArray ? parentKey : key);
         }
       }
     }

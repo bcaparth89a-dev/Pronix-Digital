@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   AlertCircle,
@@ -18,6 +18,7 @@ import { FadeIn } from "@/lib/motion";
 import { SelectedWorkDots } from "@/components/public/DotGridBackground";
 import { resolveSeoMetadata, useSeoMetadata } from "@/lib/seo";
 import { optimizeImageUrl } from "@/lib/utils";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 // --- Content Section ----------------------------------------------------------
 
@@ -42,6 +43,7 @@ export function PortfolioDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { data: project, isLoading, isError } = usePublicProject(slug);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const siteOrigin = typeof window !== "undefined" ? window.location.origin : "https://pronixdigital.tech";
 
@@ -303,7 +305,8 @@ export function PortfolioDetailPage() {
               {project.gallery.map((img, i) => (
                 <div
                   key={i}
-                  className="aspect-video rounded-[20px] overflow-hidden border border-border bg-muted group"
+                  className="aspect-video rounded-[20px] overflow-hidden border border-border bg-muted group cursor-pointer"
+                  onClick={() => setSelectedImage({ url: img.url, alt: img.alt || `Gallery image ${i + 1}` })}
                 >
                   <img
                     src={optimizeImageUrl(img.url, 600)}
@@ -352,6 +355,12 @@ export function PortfolioDetailPage() {
           </FadeIn>
         </div>
       </section>
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

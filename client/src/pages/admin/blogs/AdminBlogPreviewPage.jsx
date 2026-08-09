@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ChevronLeft, Pencil, Clock, Calendar } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useBlog } from "@/features/blogs/useBlogs";
 import { privateRoutes } from "@/config/navigation";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 function renderMarkdown(md) {
   if (!md) return "";
@@ -73,6 +75,7 @@ export function AdminBlogPreviewPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: blog, isLoading, isError } = useBlog(id);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   if (isLoading) return <PreviewSkeleton />;
 
@@ -120,11 +123,12 @@ export function AdminBlogPreviewPage() {
 
       {/* Cover image */}
       {blog.coverImage?.url && (
-        <div className="mb-6 overflow-hidden rounded-xl border">
+        <div className="mb-6 overflow-hidden rounded-xl border cursor-pointer hover:opacity-90 transition-opacity">
           <img
             src={blog.coverImage.url}
             alt={blog.coverImage.alt || blog.title}
             className="h-64 w-full object-cover"
+            onClick={() => setSelectedImage({ url: blog.coverImage.url, alt: blog.title })}
           />
         </div>
       )}
@@ -222,6 +226,12 @@ export function AdminBlogPreviewPage() {
           )}
         </div>
       )}
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

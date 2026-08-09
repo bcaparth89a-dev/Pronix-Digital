@@ -3,6 +3,7 @@ import { Upload, X } from "lucide-react";
 import { apiClient } from "@/services/apiClient";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 async function uploadFile(file) {
   const formData = new FormData();
@@ -20,6 +21,7 @@ export function ImageUpload({ value, onChange, label, multiple = false, classNam
   const [error, setError] = useState("");
   const [ratioWarning, setRatioWarning] = useState("");
   const [dragOver, setDragOver] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const inputRef = useRef(null);
 
   async function handleFiles(files) {
@@ -140,7 +142,8 @@ export function ImageUpload({ value, onChange, label, multiple = false, classNam
           <img
             src={value.url}
             alt={value.alt || "Uploaded image"}
-            className="h-48 w-full object-cover"
+            className="h-48 w-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => setSelectedImage({ url: value.url, alt: value.alt || "Uploaded image" })}
           />
           <Button
             type="button"
@@ -163,7 +166,8 @@ export function ImageUpload({ value, onChange, label, multiple = false, classNam
               <img
                 src={img.url}
                 alt={img.alt || `Image ${i + 1}`}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => setSelectedImage({ url: img.url, alt: img.alt || `Image ${i + 1}` })}
               />
               <Button
                 type="button"
@@ -182,6 +186,12 @@ export function ImageUpload({ value, onChange, label, multiple = false, classNam
 
       {error && <p className="text-xs text-destructive">{error}</p>}
       {ratioWarning && <p className="text-xs text-amber-600 dark:text-amber-500 font-medium">{ratioWarning}</p>}
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

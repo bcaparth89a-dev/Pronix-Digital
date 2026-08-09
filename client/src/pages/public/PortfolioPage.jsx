@@ -11,10 +11,11 @@ import { cn, optimizeImageUrl } from "@/lib/utils";
 import { FadeIn, FadeInStagger, FadeInItem } from "@/lib/motion";
 import { SelectedWorkDots } from "@/components/public/DotGridBackground";
 import { useSeoMetadata } from "@/lib/seo";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 // --- Project Card -------------------------------------------------------------
 
-function ProjectCard({ project, layout = "vertical" }) {
+function ProjectCard({ project, layout = "vertical", onImageClick }) {
   const isHorizontal = layout === "horizontal";
 
   return (
@@ -38,7 +39,12 @@ function ProjectCard({ project, layout = "vertical" }) {
           <img
             src={optimizeImageUrl(project.coverImage.url, 600)}
             alt={project.title}
-            className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-555"
+            className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-555 cursor-zoom-in"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onImageClick(project.coverImage.url, project.title);
+            }}
             loading="lazy"
             width="600"
             height="375"
@@ -114,6 +120,7 @@ export function PortfolioPage() {
   const pageParam = Number(searchParams.get("page") || 1);
   const [page, setPage] = useState(pageParam > 0 ? pageParam : 1);
   const [cols, setCols] = useState(3);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const updateCols = () => {
@@ -308,7 +315,11 @@ export function PortfolioPage() {
 
                     return (
                       <FadeInItem key={project.id} className={colSpanClass} direction="scale">
-                        <ProjectCard project={project} layout={cardLayout} />
+                        <ProjectCard
+                          project={project}
+                          layout={cardLayout}
+                          onImageClick={(url, alt) => setSelectedImage({ url, alt })}
+                        />
                       </FadeInItem>
                     );
                   })}
@@ -324,6 +335,13 @@ export function PortfolioPage() {
           )}
         </div>
       </section>
+
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

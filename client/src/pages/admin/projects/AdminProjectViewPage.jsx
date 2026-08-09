@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, ExternalLink, Github, Pencil } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useProject } from "@/features/projects/useProjects";
 import { privateRoutes } from "@/config/navigation";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 function formatDate(dateStr) {
   if (!dateStr) return "-";
@@ -76,6 +78,7 @@ export function AdminProjectViewPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: project, isLoading, isError } = useProject(id);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   if (isLoading) return <LoadingSkeleton />;
   if (isError || !project) {
@@ -119,11 +122,12 @@ export function AdminProjectViewPage() {
         <div className="lg:col-span-2 space-y-4">
           {/* Cover image */}
           {project.coverImage?.url && (
-            <div className="overflow-hidden rounded-lg border">
+            <div className="overflow-hidden rounded-lg border cursor-pointer hover:opacity-90 transition-opacity">
               <img
                 src={project.coverImage.url}
                 alt={project.coverImage.alt || project.title}
                 className="w-full h-64 object-cover"
+                onClick={() => setSelectedImage({ url: project.coverImage.url, alt: project.title })}
               />
             </div>
           )}
@@ -287,6 +291,12 @@ export function AdminProjectViewPage() {
           </div>
         </div>
       </div>
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

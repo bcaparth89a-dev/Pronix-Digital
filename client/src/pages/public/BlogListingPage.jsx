@@ -11,6 +11,7 @@ import { cn, optimizeImageUrl } from "@/lib/utils";
 import { FadeIn, FadeInItem, FadeInStagger } from "@/lib/motion";
 import { JournalDots } from "@/components/public/DotGridBackground";
 import { useSeoMetadata } from "@/lib/seo";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 // -- Skeleton card -------------------------------------------------------------
 function SkeletonCard() {
@@ -51,7 +52,7 @@ function FilterPill({ active, onClick, children }) {
 }
 
 // -- Blog card -----------------------------------------------------------------
-function BlogCard({ blog, layout = "vertical" }) {
+function BlogCard({ blog, layout = "vertical", onImageClick }) {
   const isHorizontal = layout === "horizontal";
 
   return (
@@ -75,7 +76,12 @@ function BlogCard({ blog, layout = "vertical" }) {
           <img
             src={optimizeImageUrl(blog.coverImage.url, 600)}
             alt={blog.title}
-            className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-550"
+            className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-550 cursor-zoom-in"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onImageClick(blog.coverImage.url, blog.title);
+            }}
             loading="lazy"
             width="600"
             height="375"
@@ -141,6 +147,7 @@ export function BlogListingPage() {
   const [page, setPage] = useState(pageParam > 0 ? pageParam : 1);
   const [inputValue, setInputValue] = useState(search);
   const [cols, setCols] = useState(3);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const updateCols = () => {
@@ -341,7 +348,12 @@ export function BlogListingPage() {
                           <img
                             src={optimizeImageUrl(featuredBlog.coverImage.url, 1000)}
                             alt={featuredBlog.title}
-                            className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-550"
+                            className="h-full w-full object-cover group-hover:scale-103 transition-transform duration-555 cursor-zoom-in"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedImage({ url: featuredBlog.coverImage.url, alt: featuredBlog.title });
+                            }}
                             loading="lazy"
                             width="1000"
                             height="563"
@@ -418,7 +430,11 @@ export function BlogListingPage() {
 
                       return (
                         <FadeInItem key={blog.id} className={colSpanClass} direction="scale">
-                          <BlogCard blog={blog} layout={cardLayout} />
+                          <BlogCard
+                            blog={blog}
+                            layout={cardLayout}
+                            onImageClick={(url, alt) => setSelectedImage({ url, alt })}
+                          />
                         </FadeInItem>
                       );
                     })}
@@ -436,6 +452,12 @@ export function BlogListingPage() {
           )}
         </div>
       </section>
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </div>
   );
 }

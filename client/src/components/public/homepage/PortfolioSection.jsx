@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 // Motion components used for landing page cards animations
 import { m as Motion } from "framer-motion";
+import { ImageLightbox } from "@/components/common/ImageLightbox";
 
 import {
   ArrowRight,
@@ -63,7 +65,7 @@ function EmptyState({ icon, title, description, action }) {
   );
 }
 
-function ProjectCard({ project }) {
+function ProjectCard({ project, onImageClick }) {
   return (
     <Motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
       <Link
@@ -75,7 +77,12 @@ function ProjectCard({ project }) {
             <img
               src={optimizeImageUrl(project.coverImage.url, 600)}
               alt={project.coverImage.alt || project.title}
-              className="h-full w-full object-cover transition-transform duration-550 group-hover:scale-103"
+              className="h-full w-full object-cover transition-transform duration-550 group-hover:scale-103 cursor-zoom-in"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onImageClick(project.coverImage.url, project.title);
+              }}
               loading="lazy"
               width="600"
               height="375"
@@ -152,6 +159,7 @@ function BlogCard({ blog }) {
 export function PortfolioSection() {
   const { data: featuredData, isLoading: featuredLoading } = useFeaturedProjects();
   const { data: blogData, isLoading: blogsLoading } = usePublicBlogs({ limit: 3 });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const featuredProjects = featuredData?.items ?? [];
   const blogs = blogData?.items ?? [];
@@ -196,7 +204,10 @@ export function PortfolioSection() {
             <FadeInStagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {featuredProjects.slice(0, 3).map((project) => (
                 <FadeInItem key={project.id} direction="scale">
-                  <ProjectCard project={project} />
+                  <ProjectCard
+                    project={project}
+                    onImageClick={(url, alt) => setSelectedImage({ url, alt })}
+                  />
                 </FadeInItem>
               ))}
             </FadeInStagger>
@@ -244,6 +255,13 @@ export function PortfolioSection() {
           )}
         </div>
       </section>
+
+      <ImageLightbox
+        src={selectedImage?.url}
+        alt={selectedImage?.alt}
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
     </>
   );
 }
