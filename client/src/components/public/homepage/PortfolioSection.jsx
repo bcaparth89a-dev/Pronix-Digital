@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+// Motion components used for landing page cards animations
 import { m as Motion } from "framer-motion";
 
 import {
