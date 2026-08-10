@@ -1,134 +1,274 @@
-# Pronix Digital – Company Profile
+Absolutely. I’ve consolidated the repeated sections, removed duplication, and organized all the information into a **clean, structured company knowledge base** that can also be used for your Pronix Digital website, RAG chatbot, SEO content, or company profile.
 
-## About Pronix Digital
+# Pronix Digital — Complete Structured Company Profile
 
-**Pronix Digital** is a premium software development company dedicated to designing, engineering, and delivering digital products that are innovative, scalable, and built for long-term success. We believe that great software should feel effortless, intuitive, and inevitable—crafted with precision, driven by technology, and focused on solving real business problems.
+## 1. Company Overview
 
-Founded with the vision of helping startups, businesses, and enterprises transform their ideas into impactful digital solutions, Pronix Digital combines modern technologies, user-centric design, and strategic thinking to create products that not only meet today's needs but are also prepared for tomorrow's challenges.
+| Field                   | Details                                                                    |
+| ----------------------- | -------------------------------------------------------------------------- |
+| **Company Name**        | Pronix Digital                                                             |
+| **Company Type**        | Software Development & Digital Solutions Company                           |
+| **Positioning**         | Premium software development company                                       |
+| **Focus**               | Digital products, custom software, web, mobile, AI, cloud & growth systems |
+| **Experience**          | 5+ years combined industry experience                                      |
+| **Products Delivered**  | 50+ software products                                                      |
+| **Clients**             | 30+                                                                        |
+| **Client Satisfaction** | 99%                                                                        |
+| **Primary Approach**    | Product-focused, transparent, scalable and security-first development      |
+| **Core Philosophy**     | Building software that feels effortless, intuitive and inevitable          |
+| **Target Customers**    | Startups, small businesses, enterprises and organizations                  |
 
-With **over 5 years of combined industry experience**, our team has successfully delivered **50+ software products**, partnered with **30+ clients**, and achieved a **99% client satisfaction rate** through transparent communication, reliable execution, and continuous innovation.
+### Tagline
 
-Rather than acting as an external vendor, we become an extension of your team—working closely with you from concept to deployment while maintaining complete transparency throughout the development lifecycle.
-
----
-
-# Our Mission
-
-Our mission is to empower businesses through technology by building secure, scalable, and high-performance digital solutions that create measurable business value.
-
-We aim to simplify complex problems with elegant software while delivering exceptional user experiences, long-term maintainability, and world-class engineering standards.
-
----
-
-# Our Vision
-
-To become one of the most trusted technology partners globally by delivering software that combines innovation, performance, reliability, and exceptional design.
-
-We envision a future where businesses of every size can leverage cutting-edge technology without compromising quality, security, or scalability.
+> **Pronix Digital — Building Software That Feels Inevitable.**
 
 ---
 
-# What We Do
+# 2. About Pronix Digital
 
-Pronix Digital provides complete end-to-end software development services—from idea validation to product launch and ongoing maintenance.
+**Pronix Digital** is a premium software development company focused on designing, engineering, and delivering innovative, scalable, and long-term digital products.
 
-We specialize in creating custom digital solutions tailored to each client's business goals.
+The company combines:
 
-Our services include:
+* Modern technologies
+* User-centric design
+* Strategic thinking
+* Scalable architecture
+* Security-first engineering
+* Performance optimization
+* Continuous development
+* Transparent communication
 
-### 🌐 Custom Web Development
+Pronix Digital aims to work as an **extension of the client's team**, rather than simply acting as an external software vendor.
+
+The company works with clients from the initial idea and validation stage through:
+
+**Strategy → Design → Development → Testing → Deployment → Scaling → Maintenance**
+
+---
+
+# 3. Mission
+
+### Mission Statement
+
+To empower businesses through technology by building:
+
+* Secure digital solutions
+* Scalable software
+* High-performance applications
+* Exceptional user experiences
+* Maintainable technology systems
+
+Pronix Digital aims to simplify complex business problems through elegant software while maintaining high engineering and design standards.
+
+---
+
+# 4. Vision
+
+### Vision Statement
+
+To become one of the world's most trusted technology partners by delivering software that combines:
+
+* Innovation
+* Performance
+* Reliability
+* Security
+* Scalability
+* Exceptional design
+
+The long-term vision is to make cutting-edge technology accessible to businesses of every size without compromising quality or scalability.
+
+---
+
+# 5. What Pronix Digital Does
+
+Pronix Digital provides **end-to-end software development services**.
+
+### Main service categories
+
+1. Web Development
+2. Mobile Application Development
+3. Full-Stack Development
+4. Artificial Intelligence Solutions
+5. Cloud & Backend Development
+6. UI/UX Design
+7. Startup Product Development
+8. Maintenance & Support
+9. Growth Systems
+
+---
+
+# 6. Web Development
+
+Pronix Digital develops custom web applications and digital platforms.
+
+### Services
 
 * Business Websites
 * Corporate Portals
 * SaaS Platforms
 * Admin Dashboards
 * Customer Portals
-* Progressive Web Applications (PWA)
+* Progressive Web Applications
 * Enterprise Web Applications
 * CRM Systems
 * ERP Solutions
+* High-conversion websites
+* React-based frontends
+* Custom web portals
+
+### Focus
+
+* Performance
+* Responsive design
+* Scalability
+* SEO
+* Security
+* Smooth user experience
+* Maintainability
 
 ---
 
-### 📱 Mobile Application Development
+# 7. Mobile Application Development
 
-We build high-performance Android and cross-platform mobile applications that provide seamless user experiences.
+Pronix Digital develops Android and cross-platform mobile applications.
 
-Services include:
+### Technologies
 
-* Android App Development
-* Flutter App Development
-* React Native Applications
-* Enterprise Mobile Apps
+* Android
+* Java
+* Kotlin
+* Flutter
+* React Native
+
+### Applications
+
+* Enterprise Applications
 * Business Applications
 * Utility Applications
 * E-commerce Applications
-* Educational Platforms
+* Educational Applications
 * Healthcare Applications
+* Fitness Applications
+* Custom mobile products
+
+### Focus
+
+* Native-like experience
+* Performance
+* Reliable architecture
+* Responsive UI
+* Cross-platform development
 
 ---
 
-### 💻 Full Stack Development
+# 8. Full-Stack Development
 
-Our team develops complete software solutions using modern technologies including:
+Pronix Digital develops complete software systems covering frontend, backend, APIs, databases and deployment.
 
-* React.js
+### Technologies
+
+#### Frontend
+
+* React
 * Next.js
-* Node.js
-* Express.js
-* MongoDB
-* Firebase
-* Supabase
-* Java Spring Boot
-* REST APIs
+* HTML5
+* CSS3
+* JavaScript
 * TypeScript
 * Tailwind CSS
+* Vanilla CSS
 
----
+#### Backend
 
-### 🤖 Artificial Intelligence Solutions
+* Node.js
+* Express.js
+* Java
+* Spring Boot
 
-We help businesses integrate Artificial Intelligence into their products.
+#### Databases
 
-Our AI expertise includes:
+* MongoDB
+* MongoDB Atlas
+* Firebase
+* Firestore
+* Supabase
+* MySQL
+* PostgreSQL
 
-* AI Chatbots
-* RAG (Retrieval-Augmented Generation) Systems
-* AI Knowledge Bases
-* Document Search
-* AI Assistants
-* Semantic Search
-* Prompt Engineering
-* LLM Integration
-* Gemini API
-* OpenAI Integration
-* AI Workflow Automation
-
----
-
-### ☁ Cloud & Backend Development
-
-We build scalable backend systems designed for performance and reliability.
-
-Services include:
+#### APIs
 
 * REST APIs
+* Authentication APIs
+* Custom business APIs
+
+---
+
+# 9. Artificial Intelligence Solutions
+
+Pronix Digital helps businesses integrate AI into their products and workflows.
+
+### AI Services
+
+* AI Chatbots
+* AI Assistants
+* RAG Systems
+* AI Knowledge Bases
+* Document Search
+* Semantic Search
+* LLM Integration
+* Prompt Engineering
+* AI Workflow Automation
+* AI-powered applications
+* Knowledge retrieval systems
+
+### AI Technologies
+
+* Google Gemini
+* OpenAI
+* RAG Architecture
+* Vector Databases
+* MongoDB Atlas Vector Search
+* AI Automation
+
+---
+
+# 10. Cloud & Backend Development
+
+Pronix Digital develops backend infrastructure designed for reliability and scalability.
+
+### Services
+
+* REST API Development
 * Authentication Systems
+* JWT Authentication
 * Role-Based Access Control
-* Database Design
+* Database Architecture
+* Database Optimization
 * Cloud Integration
 * Server Deployment
 * API Development
-* Database Optimization
 * Microservices Architecture
+* Backend Performance Optimization
+
+### Cloud / DevOps Technologies
+
+* Vercel
+* Netlify
+* Render
+* Railway
+* Firebase Hosting
+* Docker
+* GitHub
+* CI/CD
 
 ---
 
-### 🎨 UI/UX Design
+# 11. UI/UX Design
 
-We create interfaces that are visually appealing, intuitive, and conversion-focused.
+Pronix Digital focuses on creating interfaces that are visually appealing, intuitive and conversion-focused.
 
-Services include:
+### Services
 
 * User Research
 * Wireframing
@@ -138,14 +278,21 @@ Services include:
 * Dashboard Design
 * Mobile UI Design
 * Web UI Design
+* Interaction Design
+
+### Design Philosophy
+
+The goal is not simply to make software look good, but to make it:
+
+**Easy to understand → Easy to use → Fast → Consistent → Engaging**
 
 ---
 
-### 🚀 Startup Product Development
+# 12. Startup Product Development
 
-We help startups transform ideas into market-ready products.
+Pronix Digital helps startups transform ideas into market-ready products.
 
-Our startup services include:
+### Services
 
 * MVP Development
 * Product Strategy
@@ -156,13 +303,35 @@ Our startup services include:
 * Architecture Design
 * Performance Optimization
 
+### Startup Process
+
+**Idea → Validation → Prototype → MVP → Launch → Feedback → Scale**
+
 ---
 
-### 🔧 Maintenance & Support
+# 13. Growth Systems
 
-Technology evolves continuously, and so do we.
+Pronix Digital also provides technology systems that support business growth.
 
-Our support includes:
+### Services
+
+* SEO
+* Analytics Integration
+* Landing Pages
+* Landing Funnels
+* Campaign Infrastructure
+* Conversion Optimization
+* Tracking Systems
+
+The objective is to connect **technology with measurable business outcomes**.
+
+---
+
+# 14. Maintenance & Support
+
+Pronix Digital provides ongoing support after deployment.
+
+### Services
 
 * Bug Fixes
 * Performance Monitoring
@@ -171,33 +340,136 @@ Our support includes:
 * Cloud Management
 * Technical Support
 * Application Maintenance
+* Optimization
 
 ---
 
-# Why Choose Pronix Digital?
+# 15. Custom Software Development
 
-We believe software development is more than writing code—it's about building reliable digital experiences.
+Pronix Digital builds software around specific business workflows rather than forcing businesses to adapt to generic software.
 
-Our development philosophy includes:
+### Solutions
+
+* Custom CRMs
+* ERP Systems
+* Internal Tools
+* Workflow Automation
+* API Ecosystems
+* Business Portals
+* Enterprise Applications
+* Legacy System Modernization
+
+### Philosophy
+
+> **The software should adapt to the business—not the business to the software.**
+
+---
+
+# 16. Development Philosophy
+
+Pronix Digital follows a professional engineering approach.
+
+### Core Principles
 
 * Senior-level engineering from the beginning
 * Scalable architecture
 * Modern design systems
 * Weekly development milestones
-* Transparent project reporting
-* Clean and maintainable code
+* Transparent reporting
+* Clean code
+* Maintainable code
 * Security-first development
 * Performance optimization
 * Thorough testing
 * Long-term maintainability
 
-Every project follows industry best practices with proper documentation, version control, code reviews, testing, and deployment pipelines.
+### Engineering Practices
+
+Projects can include:
+
+* Version control
+* Documentation
+* Code reviews
+* Testing
+* CI/CD
+* Deployment pipelines
+* Security practices
+* Performance monitoring
 
 ---
 
-# Industries We Serve
+# 17. Development Process
 
-We build software for a wide range of industries including:
+Pronix Digital follows a clarity-and-speed-oriented development process.
+
+### Step 1 — Discovery
+
+Understand:
+
+* Business problem
+* Target users
+* Requirements
+* Goals
+* Technical constraints
+
+### Step 2 — Strategy
+
+Define:
+
+* Product strategy
+* Features
+* Technology stack
+* Architecture
+* Development roadmap
+
+### Step 3 — Design
+
+Create:
+
+* Wireframes
+* UI/UX
+* Design systems
+* Interactive prototypes
+
+### Step 4 — Development
+
+Build the product using modern technologies and scalable architecture.
+
+### Step 5 — Weekly Shipping
+
+Working code is delivered regularly so clients can see measurable progress.
+
+### Step 6 — Testing
+
+Perform:
+
+* Functional testing
+* Performance testing
+* Security checks
+* User experience validation
+
+### Step 7 — Deployment
+
+Deploy the application to the appropriate cloud infrastructure.
+
+### Step 8 — Continuous Improvement
+
+Continue with:
+
+* Maintenance
+* Monitoring
+* Bug fixes
+* New features
+* Optimization
+* Scaling
+
+---
+
+# 18. Industries Served
+
+Pronix Digital works across multiple industries.
+
+### Industries
 
 * Healthcare
 * Education
@@ -216,9 +488,9 @@ We build software for a wide range of industries including:
 
 ---
 
-# Technologies We Work With
+# 19. Technology Stack
 
-### Frontend
+## Frontend
 
 * React
 * Next.js
@@ -227,21 +499,24 @@ We build software for a wide range of industries including:
 * JavaScript
 * TypeScript
 * Tailwind CSS
+* Vanilla CSS
 
-### Backend
+## Backend
 
 * Node.js
 * Express.js
-* Spring Boot
 * Java
+* Spring Boot
 
-### Mobile
+## Mobile
 
+* Android
+* Java
+* Kotlin
 * Flutter
 * React Native
-* Android (Java & Kotlin)
 
-### Databases
+## Databases
 
 * MongoDB
 * MongoDB Atlas
@@ -251,16 +526,16 @@ We build software for a wide range of industries including:
 * MySQL
 * PostgreSQL
 
-### Artificial Intelligence
+## AI
 
 * Google Gemini
 * OpenAI
-* RAG Architecture
+* RAG
 * Vector Databases
 * MongoDB Atlas Vector Search
 * AI Automation
 
-### Cloud & DevOps
+## Cloud & DevOps
 
 * Vercel
 * Netlify
@@ -273,48 +548,464 @@ We build software for a wide range of industries including:
 
 ---
 
-# Leadership
+# 20. Leadership
 
-## 👨‍💼 Pawar Parth – Founder & Chief Executive Officer (CEO)
+## Pawar Parth
 
-**Pawar Parth** is the Founder and CEO of Pronix Digital. He is currently pursuing a **Bachelor of Computer Applications (Honours)** at **The Maharaja Sayajirao University of Vadodara**, maintaining an academic performance of **8.09 CGPA (up to the sixth semester)**.
+### Founder & Chief Executive Officer — CEO
 
-Parth is a passionate technology leader with expertise in Full Stack Development, Artificial Intelligence, Android Development, Flutter, Java, cloud technologies, UI/UX design, and scalable software architecture.
+**Pawar Parth** is the Founder and CEO of Pronix Digital.
 
-His vision is to build software that combines technical excellence with exceptional user experiences while helping businesses embrace digital transformation. Under his leadership, Pronix Digital focuses on innovation, quality engineering, and long-term client partnerships.
+He is pursuing a **Bachelor of Computer Applications (Honours)** at **The Maharaja Sayajirao University of Vadodara**.
+
+### Academic Information
+
+* Degree: BCA Honours
+* University: The Maharaja Sayajirao University of Vadodara
+* CGPA: 8.09
+* Academic progress: Up to Sixth Semester
+
+### Expertise
+
+* Full-Stack Development
+* Artificial Intelligence
+* Android Development
+* Flutter
+* Java
+* Cloud Technologies
+* UI/UX Design
+* Software Architecture
+
+### Leadership Vision
+
+Parth's vision is to build software that combines:
+
+**Technical Excellence + Exceptional UX + Business Value**
+
+He leads Pronix Digital with an emphasis on:
+
+* Innovation
+* Quality engineering
+* Scalable architecture
+* Long-term client partnerships
+* Digital transformation
 
 ---
 
-## 👨‍💻 Ronit K. Dholwani – Co-Founder - CTO(Chief Technology Officer )
+# 21. Ronit K. Dholwani
 
-**Ronit K. Dholwani** serves as the Co-Founder of Pronix Digital and plays a key role in product strategy, mobile application development, and client engagement.
+### Co-Founder & Chief Technology Officer — CTO
 
-He is pursuing a **Bachelor of Computer Applications (Honours)** at **The Maharaja Sayajirao University of Baroda**, with a **7.64 CGPA (up to the fifth semester)**.
+**Ronit K. Dholwani** is the Co-Founder and CTO of Pronix Digital.
 
-Ronit specializes in Android Development, React Native, Java, Kotlin, SQL, UI implementation, and business requirement analysis. His experience in freelance mobile application development and award-winning technical projects enables him to deliver practical, user-friendly, and high-quality digital solutions.
+He is pursuing a **Bachelor of Computer Applications (Honours)** at **The Maharaja Sayajirao University of Baroda**.
+
+### Academic Information
+
+* Degree: BCA Honours
+* University: The Maharaja Sayajirao University of Baroda
+* CGPA: 7.64
+* Academic progress: Up to Fifth Semester
+
+### Expertise
+
+* Android Development
+* React Native
+* Java
+* Kotlin
+* SQL
+* UI Implementation
+* Business Requirement Analysis
+* Mobile Application Development
+
+### Responsibilities
+
+Ronit contributes to:
+
+* Product strategy
+* Mobile application development
+* Technical implementation
+* Client engagement
+* Business requirement analysis
+
+His freelance mobile-development experience and technical projects contribute to Pronix Digital's ability to deliver practical and user-friendly mobile products.
 
 ---
 
-# Our Commitment
+# 22. Selected Projects
 
-At Pronix Digital, we don't simply develop software—we build digital products that help businesses grow, innovate, and stay competitive.
+## Apex CRM
 
-Every solution we create is designed with scalability, security, performance, and long-term maintainability in mind. From startups launching their first product to enterprises modernizing existing systems, we are committed to delivering technology that creates lasting value.
+**Category:** Custom CRM / Logistics
 
-Our success is measured not just by completed projects, but by the long-term relationships we build with our clients and the real impact our solutions have on their businesses.
+A custom customer relationship management system developed for a logistics company.
 
----
+### Features / Results
 
-# Get in Touch
-
-Whether you're launching a startup, scaling an existing platform, or building an enterprise-grade application, Pronix Digital is ready to transform your vision into reality.
-
-We combine strategic thinking, modern technologies, creative design, and engineering excellence to build software that performs, scales, and delivers meaningful business outcomes.
-
-**Pronix Digital — Building Software That Feels Inevitable.**
+* Workflow automation
+* Multi-channel client communication
+* Custom CRM workflows
+* Reported **40% reduction in workflow delays**
 
 ---
 
-# Section: WATCHER_TEST
+## Nova SaaS Frontend
 
-This is a test block for validating the automatic RAG file watcher. Pronix Digital supports continuous integration and real-time knowledge base synchronization.
+**Category:** Fintech / SaaS
+
+A high-speed interactive React and Tailwind CSS frontend designed for a fintech platform.
+
+### Features
+
+* Real-time charts
+* Fast search
+* Interactive interface
+* Sub-second page transitions
+* Modern responsive UI
+
+---
+
+## FitFlow Mobile App
+
+**Category:** Fitness / Mobile
+
+A cross-platform React Native application for iOS and Android.
+
+### Features
+
+* Workout tracking
+* Video streaming
+* Community engagement
+* Cross-platform architecture
+
+### Usage
+
+Reported to have **10,000+ active users**.
+
+---
+
+## Stellar Web Platform
+
+**Category:** Supply Chain / Enterprise
+
+An enterprise-grade supply-chain management portal.
+
+### Features
+
+* Responsive admin dashboard
+* Role-Based Access Control
+* Supply-chain management
+* PDF reporting
+* Enterprise workflows
+
+---
+
+# 23. Product Development Philosophy
+
+Pronix Digital believes that products should be designed around **business outcomes**, not simply screens.
+
+The company combines:
+
+**Strategy + Design + Engineering + Growth**
+
+into a single product-delivery system.
+
+---
+
+# 24. Company Differentiators
+
+### Why Choose Pronix Digital?
+
+#### 1. Senior-level Engineering
+
+Engineering quality is considered from the beginning of a project.
+
+#### 2. Custom Solutions
+
+Products are designed around individual business requirements.
+
+#### 3. Scalable Architecture
+
+Systems are built with future growth in mind.
+
+#### 4. Modern Technology
+
+Pronix Digital uses modern frameworks, infrastructure and development practices.
+
+#### 5. Weekly Shipping
+
+Clients receive visible working progress regularly.
+
+#### 6. Transparent Communication
+
+Clients remain involved throughout the development lifecycle.
+
+#### 7. Security First
+
+Security is considered throughout application development.
+
+#### 8. Performance Focus
+
+Applications are optimized for speed and reliability.
+
+#### 9. Long-Term Partnership
+
+The relationship does not end at deployment.
+
+#### 10. Business-Focused Development
+
+Technology is built to solve actual business problems and create measurable value.
+
+---
+
+# 25. Company Statistics
+
+| Metric                        |                       Value |
+| ----------------------------- | --------------------------: |
+| Combined Industry Experience  |                **5+ Years** |
+| Software Products Delivered   |                     **50+** |
+| Clients                       |                     **30+** |
+| Client Satisfaction           |                     **99%** |
+| FitFlow Users                 |    **10,000+ active users** |
+| Apex CRM Workflow Improvement | **40% reduction in delays** |
+
+---
+
+# 26. Company Service Architecture
+
+A simplified view of Pronix Digital's offerings:
+
+```text
+                    PRONIX DIGITAL
+                          │
+       ┌──────────────────┼──────────────────┐
+       │                  │                  │
+   PRODUCT            TECHNOLOGY           GROWTH
+       │                  │                  │
+       ├─ Web             ├─ Full Stack      ├─ SEO
+       ├─ Mobile          ├─ AI              ├─ Analytics
+       ├─ SaaS            ├─ Cloud           ├─ Landing Funnels
+       ├─ CRM             ├─ APIs            └─ Campaign Systems
+       └─ ERP             └─ DevOps
+```
+
+---
+
+# 27. Blog & Knowledge Content
+
+Pronix Digital regularly publishes technical and business insights.
+
+## Blog 1 — Why Custom CRMs Win Over Off-the-Shelf Solutions
+
+### Main Topic
+
+Custom CRM development.
+
+### Key Ideas
+
+* Bespoke software fits unique business processes.
+* Businesses don't have to adapt to rigid templates.
+* Custom systems can improve workflow integration.
+* Security can be designed around specific requirements.
+* Long-term costs should be considered when choosing between custom and off-the-shelf systems.
+
+---
+
+## Blog 2 — Designing Scalable Design Systems in React
+
+### Main Topic
+
+React design systems.
+
+### Key Ideas
+
+* A design system is more than component styling.
+* It creates a shared visual and development language.
+* Design tokens improve consistency.
+* Components should be structured for reuse.
+* Animations should remain smooth across applications.
+
+---
+
+## Blog 3 — The Weekly Shipping Cadence: How We Avoid Project Delays
+
+### Main Topic
+
+Agile product delivery.
+
+### Key Ideas
+
+* Large delays often happen because feedback loops are too long.
+* Weekly shipping keeps progress visible.
+* Frequent feedback improves alignment.
+* Working software provides measurable progress.
+* Regular delivery reduces uncertainty.
+
+### Core Principle
+
+**Ship → Review → Improve → Repeat**
+
+---
+
+## Blog 4 — Modern API Design with Node.js and Express
+
+### Main Topic
+
+Production-ready backend development.
+
+### Key Ideas
+
+* Proper route organization
+* Request validation
+* Zod validation schemas
+* Error handling
+* JWT authentication
+* Secure API architecture
+* Production-ready MERN development
+
+---
+
+# 28. Frequently Asked Questions
+
+## What services does Pronix Digital offer?
+
+Pronix Digital provides full-lifecycle software services including:
+
+* Web platforms
+* Mobile applications
+* Custom software
+* CRMs
+* Internal tools
+* SaaS products
+* Growth systems
+* SEO
+* Landing funnels
+* Analytics
+
+---
+
+## What technologies does Pronix Digital use?
+
+The company primarily works with modern technologies including:
+
+* React
+* Next.js
+* Node.js
+* Express.js
+* MongoDB
+* TypeScript
+* Tailwind CSS
+* Java
+* Spring Boot
+* Flutter
+* React Native
+* Firebase
+* Supabase
+* AI technologies
+
+---
+
+## How can Pronix Digital help my business?
+
+Pronix Digital helps businesses transform complex ideas and workflows into scalable software products.
+
+The company focuses on:
+
+* Performance
+* Scalability
+* Security
+* User experience
+* Maintainability
+* Business outcomes
+
+---
+
+## What is Pronix Digital's development process?
+
+The process focuses on:
+
+**Discovery → Strategy → Prototype → Design → Development → Weekly Shipping → Testing → Deployment → Continuous Improvement**
+
+---
+
+## How do I start a project?
+
+A potential client can contact Pronix Digital through the website's contact form to:
+
+* Discuss their requirements
+* Book a consultation
+* Request a custom quote
+
+---
+
+# 29. Core Company Message
+
+Pronix Digital is not simply a coding company.
+
+Its positioning can be summarized as:
+
+> **A technology partner that helps businesses transform ideas, workflows and challenges into scalable digital products.**
+
+The company brings together:
+
+**Strategy + UI/UX + Full-Stack Engineering + AI + Cloud + Growth**
+
+under one delivery system.
+
+---
+
+# 30. RAG / AI Knowledge Base — Recommended Structure
+
+Since the information you provided appears to be intended for your **Pronix Digital RAG/AI knowledge base**, I would structure the actual knowledge files into separate documents rather than keeping everything in one huge file.
+
+```text
+pronix-knowledge/
+│
+├── company/
+│   ├── company-overview.md
+│   ├── mission-vision.md
+│   ├── company-values.md
+│   └── leadership.md
+│
+├── services/
+│   ├── web-development.md
+│   ├── mobile-development.md
+│   ├── full-stack-development.md
+│   ├── ai-solutions.md
+│   ├── cloud-backend.md
+│   ├── ui-ux-design.md
+│   ├── startup-development.md
+│   ├── custom-software.md
+│   ├── growth-systems.md
+│   └── maintenance-support.md
+│
+├── technology/
+│   └── technology-stack.md
+│
+├── portfolio/
+│   ├── apex-crm.md
+│   ├── nova-saas.md
+│   ├── fitflow.md
+│   └── stellar-platform.md
+│
+├── process/
+│   └── development-process.md
+│
+├── industries/
+│   └── industries-served.md
+│
+├── blog/
+│   ├── custom-crm.md
+│   ├── react-design-systems.md
+│   ├── weekly-shipping.md
+│   └── node-express-api-design.md
+│
+└── faq/
+    └── frequently-asked-questions.md
+```
+
+### Important
+
+I would also **remove the `WATCHER_TEST` block from the production knowledge base**. It looks like a technical test entry for validating your automatic RAG file watcher, rather than genuine company information.
+
+This structure will make your RAG system much cleaner because a query such as **“Who is the CEO?”**, **“What mobile technologies do you use?”**, **“Tell me about Apex CRM”**, or **“What services do you provide?”** can retrieve the most relevant chunks instead of searching through one giant duplicated document.
