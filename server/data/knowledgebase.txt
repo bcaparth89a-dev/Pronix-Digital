@@ -10,8 +10,8 @@ Absolutely. I’ve consolidated the repeated sections, removed duplication, and 
 | **Company Type**        | Software Development & Digital Solutions Company                           |
 | **Positioning**         | Premium software development company                                       |
 | **Focus**               | Digital products, custom software, web, mobile, AI, cloud & growth systems |
-| **Experience**          | 5+ years combined industry experience                                      |
-| **Products Delivered**  | 50+ software products                                                      |
+| **Experience**          | 2+ years combined industry experience                                      |
+| **Products Delivered**  | 10+ software products                                                      |
 | **Clients**             | 30+                                                                        |
 | **Client Satisfaction** | 99%                                                                        |
 | **Primary Approach**    | Product-focused, transparent, scalable and security-first development      |
@@ -954,58 +954,3 @@ under one delivery system.
 
 ---
 
-# 30. RAG / AI Knowledge Base — Recommended Structure
-
-Since the information you provided appears to be intended for your **Pronix Digital RAG/AI knowledge base**, I would structure the actual knowledge files into separate documents rather than keeping everything in one huge file.
-
-```text
-pronix-knowledge/
-│
-├── company/
-│   ├── company-overview.md
-│   ├── mission-vision.md
-│   ├── company-values.md
-│   └── leadership.md
-│
-├── services/
-│   ├── web-development.md
-│   ├── mobile-development.md
-│   ├── full-stack-development.md
-│   ├── ai-solutions.md
-│   ├── cloud-backend.md
-│   ├── ui-ux-design.md
-│   ├── startup-development.md
-│   ├── custom-software.md
-│   ├── growth-systems.md
-│   └── maintenance-support.md
-│
-├── technology/
-│   └── technology-stack.md
-│
-├── portfolio/
-│   ├── apex-crm.md
-│   ├── nova-saas.md
-│   ├── fitflow.md
-│   └── stellar-platform.md
-│
-├── process/
-│   └── development-process.md
-│
-├── industries/
-│   └── industries-served.md
-│
-├── blog/
-│   ├── custom-crm.md
-│   ├── react-design-systems.md
-│   ├── weekly-shipping.md
-│   └── node-express-api-design.md
-│
-└── faq/
-    └── frequently-asked-questions.md
-```
-
-### Important
-
-I would also **remove the `WATCHER_TEST` block from the production knowledge base**. It looks like a technical test entry for validating your automatic RAG file watcher, rather than genuine company information.
-
-This structure will make your RAG system much cleaner because a query such as **“Who is the CEO?”**, **“What mobile technologies do you use?”**, **“Tell me about Apex CRM”**, or **“What services do you provide?”** can retrieve the most relevant chunks instead of searching through one giant duplicated document.
