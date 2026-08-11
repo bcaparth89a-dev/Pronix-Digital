@@ -79,11 +79,13 @@ export const router = createBrowserRouter([
               { path: privateRoutes.adminContacts, element: lazyLoad(() => import("@/pages/admin/contacts/AdminContactsPage"), "AdminContactsPage") },
               { path: privateRoutes.adminUsers, element: lazyLoad(() => import("@/pages/admin/users/AdminUsersPage"), "AdminUsersPage") },
               { path: privateRoutes.adminSettings, element: lazyLoad(() => import("@/pages/admin/AdminSettingsPage"), "AdminSettingsPage") },
+              { path: privateRoutes.adminWorkManagement, element: lazyLoad(() => import("@/pages/admin/WorkManagementPage"), "WorkManagementPage") },
               { path: "/admin/*", element: <Navigate to={privateRoutes.adminDashboard} replace /> },
             ],
           },
         ],
       },
+
       // User dashboard routes
       {
         element: <AuthProvider><ThemeProvider><ProtectedRoute /></ThemeProvider></AuthProvider>,

@@ -23,6 +23,7 @@ export const privateRoutes = {
   adminContacts: "/admin/contacts",
   adminUsers: "/admin/users",
   adminSettings: "/admin/settings",
+  adminWorkManagement: "/admin/work-management",
   adminProjectCreate: "/admin/projects/new",
   adminProjectEdit: (id) => `/admin/projects/${id}/edit`,
   adminProjectView: (id) => `/admin/projects/${id}`,
@@ -30,3 +31,4 @@ export const privateRoutes = {
   adminBlogEdit: (id) => `/admin/blogs/${id}/edit`,
   adminBlogView: (id) => `/admin/blogs/${id}`,
 };
+

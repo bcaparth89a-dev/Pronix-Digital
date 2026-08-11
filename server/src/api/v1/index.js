@@ -12,6 +12,7 @@ import { userRouter } from "../../routes/user.routes.js";
 import { metricRouter } from "../../routes/metric.routes.js";
 import { serviceRouter } from "../../routes/service.routes.js";
 import { notificationRouter } from "../../routes/notification.routes.js";
+import { taskRouter } from "../../routes/task.routes.js";
 
 export const apiRouter = Router();
 
@@ -28,3 +29,5 @@ apiRouter.use("/upload", uploadRouter);
 apiRouter.use("/metrics", metricRouter);
 apiRouter.use("/services", serviceRouter);
 apiRouter.use("/notifications", notificationRouter);
+apiRouter.use("/tasks", taskRouter);
+

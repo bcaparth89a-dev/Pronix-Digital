@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { LayoutDashboard, FolderKanban, Newspaper, CircleHelp, Mail, Users, Settings, X } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Newspaper, CircleHelp, Mail, Users, Settings, X, ClipboardCheck } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { privateRoutes } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", href: privateRoutes.adminDashboard, icon: LayoutDashboard, end: true },
+  { label: "Work Management", href: privateRoutes.adminWorkManagement, icon: ClipboardCheck },
   { label: "Projects", href: privateRoutes.adminProjects, icon: FolderKanban },
   { label: "Blogs", href: privateRoutes.adminBlogs, icon: Newspaper },
   { label: "FAQs", href: privateRoutes.adminFaqs, icon: CircleHelp },
@@ -13,6 +14,7 @@ const navItems = [
   { label: "Users", href: privateRoutes.adminUsers, icon: Users },
   { label: "Settings", href: privateRoutes.adminSettings, icon: Settings },
 ];
+
 
 export function AdminSidebar({ isOpen, onClose }) {
   // Lock body scrolling when sidebar is open on mobile

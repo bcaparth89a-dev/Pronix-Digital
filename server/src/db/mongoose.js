@@ -4,6 +4,7 @@ import { logger } from "../utils/logger.js";
 import { metricService } from "../services/metric.service.js";
 import { serviceService } from "../services/service.service.js";
 import { initializeRAGPipeline } from "../services/rag.service.js";
+import { seedDefaultTasks } from "../scripts/seedTasks.js";
 
 mongoose.set("strictQuery", true);
 
@@ -38,8 +39,10 @@ export async function connectDatabase() {
 
   await metricService.seedDefaultMetrics();
   await serviceService.seedDefaultServices();
+  await seedDefaultTasks();
   await initializeRAGPipeline();
 }
+
 
 export async function disconnectDatabase() {
   await mongoose.disconnect();
