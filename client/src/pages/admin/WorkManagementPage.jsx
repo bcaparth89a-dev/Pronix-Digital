@@ -110,19 +110,6 @@ export function WorkManagementPage() {
   const [aiLoadingStep, setAiLoadingStep] = useState(0);
   const [aiError, setAiError] = useState("");
 
-  useEffect(() => {
-    let interval;
-    if (analyzeAiMutation.isPending) {
-      setAiLoadingStep(0);
-      interval = setInterval(() => {
-        setAiLoadingStep((prev) => (prev < 4 ? prev + 1 : prev));
-      }, 3000);
-    } else {
-      setAiLoadingStep(0);
-    }
-    return () => clearInterval(interval);
-  }, [analyzeAiMutation.isPending]);
-
   // Current logged in user name resolver
   const { data: adminMe } = useQuery({
     queryKey: ["admin-me"],
@@ -313,6 +300,19 @@ export function WorkManagementPage() {
       }
     }
   });
+
+  useEffect(() => {
+    let interval;
+    if (analyzeAiMutation.isPending) {
+      setAiLoadingStep(0);
+      interval = setInterval(() => {
+        setAiLoadingStep((prev) => (prev < 4 ? prev + 1 : prev));
+      }, 3000);
+    } else {
+      setAiLoadingStep(0);
+    }
+    return () => clearInterval(interval);
+  }, [analyzeAiMutation.isPending]);
 
   const bulkUpdateMutation = useMutation({
     mutationFn: ({ ids, action, payload }) => apiClient.post("/tasks/bulk-update", { ids, action, payload }),
