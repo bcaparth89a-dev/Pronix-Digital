@@ -279,7 +279,7 @@ export const bulkDeleteTasks = asyncHandler(async (req, res) => {
 
 export const deleteAllTasks = asyncHandler(async (req, res) => {
   const { confirmationText } = req.body;
-  if (confirmationText !== "DELETE ALL") {
+  if (!confirmationText || confirmationText.trim().toUpperCase() !== "DELETE ALL") {
     res.status(httpStatus.BAD_REQUEST).json(new ApiResponse(httpStatus.BAD_REQUEST, null, "Invalid confirmation text"));
     return;
   }

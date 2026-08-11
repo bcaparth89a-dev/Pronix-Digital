@@ -2108,8 +2108,8 @@ export function WorkManagementPage() {
               <div className="flex justify-center gap-3 pt-2">
                 <Button variant="outline" onClick={() => { setIsDeleteAllOpen(false); setDeleteAllConfirmText(""); }}>Cancel</Button>
                 <Button
-                  disabled={deleteAllConfirmText !== "DELETE ALL" || deleteAllMutation.isPending}
-                  onClick={() => deleteAllMutation.mutate(deleteAllConfirmText)}
+                  disabled={deleteAllConfirmText.trim().toUpperCase() !== "DELETE ALL" || deleteAllMutation.isPending}
+                  onClick={() => deleteAllMutation.mutate(deleteAllConfirmText.trim().toUpperCase())}
                   className="bg-destructive hover:bg-destructive/90 text-destructive-foreground disabled:opacity-40"
                 >
                   {deleteAllMutation.isPending ? "Deleting Everything..." : "Delete Everything"}
