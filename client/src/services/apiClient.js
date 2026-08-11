@@ -15,9 +15,23 @@ export const apiClient = axios.create({
 
 const refreshClient = axios.create({
   baseURL: env.VITE_API_BASE_URL,
-  timeout: 15000,
+  timeout: 30000,
   withCredentials: true,
 });
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
 
 apiClient.interceptors.request.use((config) => {
   const token = tokenStorage.get();
@@ -42,6 +56,21 @@ apiClient.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return apiClient(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
+      isRefreshing = true;
+
       try {
         const response = await refreshClient.post(REFRESH_ENDPOINT);
         const accessToken = response.data?.data?.accessToken;
@@ -49,10 +78,21 @@ apiClient.interceptors.response.use(
         if (accessToken) {
           tokenStorage.set(accessToken);
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          processQueue(null, accessToken);
+          isRefreshing = false;
           return apiClient(originalRequest);
         }
-      } catch {
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        isRefreshing = false;
         tokenStorage.clear();
+
+        const cleanErr = {
+          status: 401,
+          message: "Your session has expired. Please sign in again.",
+          originalError: refreshError,
+        };
+        return Promise.reject(cleanErr);
       }
     }
 

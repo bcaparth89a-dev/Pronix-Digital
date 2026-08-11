@@ -329,8 +329,18 @@ export const deleteFilteredTasks = asyncHandler(async (req, res) => {
 
 export const analyzeTasksWithAi = asyncHandler(async (req, res) => {
   const { paragraph } = req.validated.body;
-  const result = await parseTasksWithAi(paragraph);
-  res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, result, "Plan parsed successfully"));
+  const isAdmin = req.user?.role === "admin";
+
+  logger.info("AI analysis started");
+  logger.info(`Authenticated admin: ${isAdmin}`);
+
+  try {
+    const result = await parseTasksWithAi(paragraph);
+    res.status(httpStatus.OK).json(new ApiResponse(httpStatus.OK, result, "Plan parsed successfully"));
+  } catch (err) {
+    logger.error(`AI analysis failed: ${err.message}`);
+    throw err;
+  }
 });
 
 export const bulkUpdateTasks = asyncHandler(async (req, res) => {

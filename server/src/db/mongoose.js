@@ -37,6 +37,21 @@ export async function connectDatabase() {
     logger.warn("Could not check/drop legacy collections: " + err.message);
   }
 
+  // Drop legacy unique index on replacedByTokenHash if it exists
+  try {
+    const db = mongoose.connection.db;
+    const collections = await db.listCollections({ name: "refreshtokens" }).toArray();
+    if (collections.length > 0) {
+      const indexes = await db.collection("refreshtokens").indexes();
+      if (indexes.some(idx => idx.name === "replacedByTokenHash_1")) {
+        await db.collection("refreshtokens").dropIndex("replacedByTokenHash_1");
+        logger.info("Successfully dropped unique index replacedByTokenHash_1 from refreshtokens");
+      }
+    }
+  } catch (err) {
+    logger.warn("Could not check/drop replacedByTokenHash_1 index: " + err.message);
+  }
+
   await metricService.seedDefaultMetrics();
   await serviceService.seedDefaultServices();
   await seedDefaultTasks();

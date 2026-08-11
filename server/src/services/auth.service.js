@@ -21,7 +21,7 @@ function authPayload(user) {
   };
 }
 
-async function issueTokenPair(user, requestMeta = {}, replacedTokenHash) {
+async function issueTokenPair(user, requestMeta = {}) {
   const payload = authPayload(user);
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
@@ -31,7 +31,6 @@ async function issueTokenPair(user, requestMeta = {}, replacedTokenHash) {
     user: user._id,
     tokenHash,
     expiresAt: getRefreshTokenExpiresAt(),
-    replacedByTokenHash: replacedTokenHash,
     createdByIp: requestMeta.ipAddress,
     userAgent: requestMeta.userAgent,
   });
@@ -99,7 +98,7 @@ export const authService = {
       throw new ApiError(httpStatus.UNAUTHORIZED, "Admin session is no longer valid");
     }
 
-    const tokens = await issueTokenPair(user, requestMeta, tokenHash);
+    const tokens = await issueTokenPair(user, requestMeta);
 
     await refreshTokenRepository.revoke(tokenHash, {
       replacedByTokenHash: sha256(tokens.refreshToken),
