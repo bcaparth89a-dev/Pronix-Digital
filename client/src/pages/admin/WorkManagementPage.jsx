@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Sparkles,
@@ -107,6 +107,21 @@ export function WorkManagementPage() {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResults, setAiResults] = useState(null); // parsed tasks awaiting review
   const [duplicateMode, setDuplicateMode] = useState("review"); // 'skip', 'keep'
+  const [aiLoadingStep, setAiLoadingStep] = useState(0);
+  const [aiError, setAiError] = useState("");
+
+  useEffect(() => {
+    let interval;
+    if (analyzeAiMutation.isPending) {
+      setAiLoadingStep(0);
+      interval = setInterval(() => {
+        setAiLoadingStep((prev) => (prev < 4 ? prev + 1 : prev));
+      }, 3000);
+    } else {
+      setAiLoadingStep(0);
+    }
+    return () => clearInterval(interval);
+  }, [analyzeAiMutation.isPending]);
 
   // Current logged in user name resolver
   const { data: adminMe } = useQuery({
@@ -280,6 +295,9 @@ export function WorkManagementPage() {
 
   const analyzeAiMutation = useMutation({
     mutationFn: (paragraph) => apiClient.post("/tasks/ai-analyze", { paragraph }).then((r) => r.data.data),
+    onMutate: () => {
+      setAiError("");
+    },
     onSuccess: (data) => {
       // Pre-select all extracted tasks for import
       const result = data.map((t, idx) => ({ ...t, tempId: idx, selected: true }));
@@ -287,7 +305,12 @@ export function WorkManagementPage() {
       toast.success(`Extracted ${data.length} tasks from plan`);
     },
     onError: (err) => {
-      toast.error(err.message || "AI extraction failed");
+      console.error("AI parse error:", err);
+      if (err.message && (err.message.includes("timeout") || err.message.includes("Network Error") || err.originalError?.code === "ECONNABORTED")) {
+        setAiError("AI task generation timed out. Please try again or use a smaller work plan.");
+      } else {
+        setAiError(err.message || "Failed to generate tasks. Please try again with a simpler description.");
+      }
     }
   });
 
@@ -1390,12 +1413,15 @@ export function WorkManagementPage() {
               className="relative w-full max-w-5xl rounded-lg border bg-card p-6 shadow-2xl flex flex-col max-h-[85vh]"
             >
               <button
+                disabled={analyzeAiMutation.isPending}
                 onClick={() => {
+                  if (analyzeAiMutation.isPending) return;
                   setIsAiModalOpen(false);
                   setAiPrompt("");
                   setAiResults(null);
+                  setAiError("");
                 }}
-                className="absolute top-4 right-4 text-stone-400 hover:text-white"
+                className="absolute top-4 right-4 text-stone-400 hover:text-white disabled:opacity-30"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -1411,28 +1437,40 @@ export function WorkManagementPage() {
                     Paste a paragraph detailing your upcoming work plan. The AI will analyze the dates, times, tasks, and asignees to segment them into clean, structured records.
                   </p>
                   
+                  {aiError && (
+                    <div className="bg-destructive/10 border border-destructive/20 p-3 rounded-md flex items-start gap-2.5 text-xs text-red-400 font-semibold leading-relaxed">
+                      <AlertCircle className="h-4.5 w-4.5 shrink-0 mt-0.5" />
+                      <div>{aiError}</div>
+                    </div>
+                  )}
+
                   <div>
                     <label className="text-xs font-semibold text-stone-300 block mb-1.5">Paste your work plan</label>
                     <textarea
+                      disabled={analyzeAiMutation.isPending}
                       rows="6"
                       placeholder='Example: "On 15 August Parth will research AI from 8:40 to 9:05. Ronit will create the AI demo. After that Parth will write the LinkedIn post."'
                       value={aiPrompt}
                       onChange={(e) => setAiPrompt(e.target.value)}
-                      className="w-full rounded-md border bg-background p-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary leading-relaxed"
+                      className="w-full rounded-md border bg-background p-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary leading-relaxed disabled:opacity-50"
                     />
                   </div>
 
                   <div className="flex justify-end gap-2 pt-2">
-                    <Button variant="outline" onClick={() => setIsAiModalOpen(false)}>Cancel</Button>
+                    <Button variant="outline" disabled={analyzeAiMutation.isPending} onClick={() => { setIsAiModalOpen(false); setAiError(""); }}>Cancel</Button>
                     <Button
                       disabled={!aiPrompt.trim() || analyzeAiMutation.isPending}
                       onClick={() => analyzeAiMutation.mutate(aiPrompt)}
-                      className="flex items-center gap-1.5"
+                      className="flex items-center gap-1.5 min-w-[220px] justify-center"
                     >
                       {analyzeAiMutation.isPending ? (
                         <>
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                          Analyzing plan...
+                          {aiLoadingStep === 0 && "✨ Analyzing your work plan..."}
+                          {aiLoadingStep === 1 && "Extracting dates..."}
+                          {aiLoadingStep === 2 && "Understanding assignments..."}
+                          {aiLoadingStep === 3 && "Creating tasks..."}
+                          {aiLoadingStep >= 4 && "Preparing review..."}
                         </>
                       ) : (
                         <>

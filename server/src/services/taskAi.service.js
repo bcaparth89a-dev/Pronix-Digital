@@ -68,26 +68,82 @@ TASK EXTRACTION RULES
 8. Repeating tasks: Identify terms like "every day", "daily" -> set "isRecurring": true, "recurrence": { "frequency": "daily" }.
 9. Never invent people, dates, or deadlines. If no date is mentioned in the text, set the date field strictly to null. If uncertain, set to null and add a warning message in the warnings array.`;
 
-  const prompt = `${systemPrompt}\n\nWork Plan Paragraph:\n"${paragraph}"`;
+  logger.info("AI analysis started");
 
   try {
-    const response = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-      },
-    });
+    let tasks = [];
+    const isLarge = paragraph.length >= 500;
 
-    const text = response.response.text();
-    logger.info(`AI Response text: ${text}`);
+    if (!isLarge) {
+      logger.info("AI request sent (single batch)");
+      const prompt = `${systemPrompt}\n\nWork Plan Paragraph:\n"${paragraph}"`;
 
-    const resultObj = JSON.parse(text);
+      const response = await model.generateContent({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: "application/json",
+        },
+      });
 
-    if (!resultObj || !Array.isArray(resultObj.tasks)) {
-      throw new Error("AI returned invalid JSON: expected an object containing a tasks array");
+      logger.info("Gemini response received");
+      logger.info("Gemini response parsing started");
+
+      const text = response.response.text();
+      logger.info(`AI Response text: ${text}`);
+
+      const resultObj = JSON.parse(text);
+      if (resultObj && Array.isArray(resultObj.tasks)) {
+        tasks = resultObj.tasks;
+      }
+    } else {
+      logger.info("AI request sent (batched 4 parallel date-ranges)");
+      const dateRanges = [
+        { start: "2026-08-10", end: "2026-08-20", label: "10 August to 20 August 2026" },
+        { start: "2026-08-21", end: "2026-08-31", label: "21 August to 31 August 2026" },
+        { start: "2026-09-01", end: "2026-09-10", label: "1 September to 10 September 2026" },
+        { start: "2026-09-11", end: "2026-09-20", label: "11 September to 20 September 2026" }
+      ];
+
+      const batchPromises = dateRanges.map(async (range, index) => {
+        const rangeInstruction = `CRITICAL: For this extraction request, ONLY extract tasks scheduled to occur between ${range.label} (inclusive). ${
+          index === 0 ? "Also extract any tasks that do not mention any date at all." : "Ignore tasks outside this range."
+        }`;
+        const prompt = `${systemPrompt}\n\n${rangeInstruction}\n\nWork Plan Paragraph:\n"${paragraph}"`;
+
+        try {
+          const response = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseMimeType: "application/json",
+            },
+          });
+          const text = response.response.text();
+          const resultObj = JSON.parse(text);
+          return resultObj.tasks || [];
+        } catch (err) {
+          logger.error(`Error in parsing AI Batch ${index + 1} (${range.label}):`, err);
+          return [];
+        }
+      });
+
+      const results = await Promise.all(batchPromises);
+      logger.info("Gemini response received");
+      logger.info("Gemini response parsing started");
+
+      const combinedTasks = results.flat();
+      
+      // Deduplicate combined task list
+      const seen = new Set();
+      for (const t of combinedTasks) {
+        const key = `${t.title?.toLowerCase()?.trim()}|${t.date}|${t.assignedTo}|${t.startTime}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          tasks.push(t);
+        }
+      }
     }
 
-    const tasks = resultObj.tasks;
+    logger.info(`Tasks extracted. Total tasks count: ${tasks.length}`);
 
     // Process tasks: identify warnings and check duplicates
     const enrichedTasks = await Promise.all(
@@ -135,6 +191,7 @@ TASK EXTRACTION RULES
       })
     );
 
+    logger.info("AI analysis completed");
     return enrichedTasks;
   } catch (error) {
     logger.error("AI Task Extraction error:", error);
